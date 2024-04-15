@@ -17,8 +17,3 @@ git clone "[repository_link]"
 git add [file]
 git commit -m "[message]"
 git push origin main 
-
-
-나는 빡빡이다
-dlehdwn ajdcjddl
-w
