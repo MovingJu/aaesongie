@@ -1,0 +1,23 @@
+{initial settings}
+
+git init
+git config --global user.email "[email]"
+git config --global user.name "[username]"
+git branch -M main
+git remote add origin "[repository_link]"
+
+
+{clone}
+
+git pull origin main
+git clone "[repository_link]"
+
+{add}
+
+git add [file]
+git commit -m "[message]"
+git push origin main 
+
+
+나는 빡빡이다
+sddsdsdsa
