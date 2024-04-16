@@ -15,5 +15,5 @@ result = player_input()
 print('결과 : ', result)
 
 if result == 7:
-    print('오 님 좀 쩌는 듯?')
-else: print('허접이시네요')
+    print('오')
+else: print('허접')
