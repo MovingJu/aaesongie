@@ -10,7 +10,7 @@ html_content = response.text
 soup = BeautifulSoup(html_content, "html.parser")
 
 # 클래스 번호가 "example-class"인 요소 찾기
-elements = soup.find_all(class_="D8mMMoro")
+elements = soup.find_all(class_="BXgio0S3")
 
 # 요소 출력
 for element in elements:
