@@ -25,7 +25,7 @@ for i in 재고:
 for i in range(1,101):
     for j in range(1,101):
         m = i*j
-        print(f'print({i}*{j})={m}')\
+        print(f'print({i}*{j})={m}')
 
 def dlehdwn():
     print('안녕하세요 중고차신뢰딜러 차은우입니다')
@@ -44,8 +44,9 @@ def math2(x,y):
 key = [1, 2]
 key[0] = input('x값 입력해 ')
 key[1] = input('y값 입력해 ')
+
 for i in range(0,2):
     key[i] = float(key[i])
-math(key[0],key[1])
 
+math(key[0],key[1])
 print(math2(key[0],key[1]))
