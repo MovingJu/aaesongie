@@ -1,3 +1,4 @@
+# player_input 내가 만들었당
 def player_input():
     while True:
         plaintext = input("어떤 문장을 암호화하시겠어요? ")
