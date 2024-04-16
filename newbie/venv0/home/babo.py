@@ -1,4 +1,5 @@
 import random
+import sys
 
 player_input = input("할거임? (y or n)")
 def randnum():
@@ -6,11 +7,11 @@ def randnum():
         bebe = random.randint(0,98)
         return bebe
     elif player_input == "n":
-        bebe = "잘가요"
-        return bebe
+        print('잘가요')
+        sys.exit()
     else:
         print("넌 뭐야")
-        exit
+        sys.exit()
 
 result = randnum()
 print('결과 : ', result)
