@@ -6,7 +6,7 @@ y = []
 
 for i in range(-100,101):
     x.append(i)
-    y.append(i**2 + 2*i + 1)
+    y.append(i**3+i**2 + 2*i + 1)
 
 # 선 그래프
 plt.plot(x, y)
