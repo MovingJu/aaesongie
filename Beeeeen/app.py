@@ -39,7 +39,7 @@ def math(x,y):
     print(result)
 
 def math2(x,y):
-    return x**2+2*x+1 + y           # 이거 개사기
+    return x**2+2*x+1 + y
 
 key = [1, 2]
 key[0] = input('x값 입력해 ')
