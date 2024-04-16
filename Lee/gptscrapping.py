@@ -1,18 +1,22 @@
 import requests
 from bs4 import BeautifulSoup
 
-# 웹페이지의 HTML 가져오기
-url = "https://namu.wiki/w/%EB%8D%94%EC%8A%A4%ED%8B%B4%20%EB%8B%88%ED%8D%BC%ED%8A%B8?from=%EB%8B%88%ED%8D%BC%ED%8A%B8"
+# 웹 페이지 URL
+url = "https://namu.wiki/w/%EC%8B%A4%EC%8B%9C%EA%B0%84%20%EA%B2%80%EC%83%89%EC%96%B4"
+
+# requests를 사용하여 HTML 가져오기
 response = requests.get(url)
 html_content = response.text
 
 # BeautifulSoup을 사용하여 HTML 파싱
-soup = BeautifulSoup(html_content, "html.parser")
+soup = BeautifulSoup(html_content, 'html.parser')
 
-# 클래스 번호가 "example-class"인 요소 찾기
-elements = soup.find_all(class_="BXgio0S3")
+# div 태그 찾기
+div_tag = soup.find('div', class_='viIaFwOi khkcFwKY')
 
-print(type(elements))
-# 요소 출력
-for element in elements:
-    print(element.text)
+# div 태그 안에 있는 a 태그 찾기
+a_tags = div_tag.find_all('a')
+
+# a 태그의 내용물 출력
+for a_tag in a_tags:
+    print(a_tag.text)
