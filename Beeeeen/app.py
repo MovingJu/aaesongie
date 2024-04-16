@@ -25,4 +25,4 @@ for i in 재고:
 for i in range(1,101):
     for j in range(1,101):
         m = i*j
-        print(f'print({i}*{j})={m}')
+        print(f'print({i}*{j})={m}')\
