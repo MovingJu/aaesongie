@@ -9,8 +9,9 @@ def randnum():
         bebe = "잘가요"
         return bebe
     else:
-        bebe = "넌 뭐야"
-        return bebe
+        print("넌 뭐야")
+        exit
+
 result = randnum()
 print('결과 : ', result)
 
