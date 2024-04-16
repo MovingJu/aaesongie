@@ -21,8 +21,31 @@ for i in 재고:
 재고 = [10,20,30]
 for i in 재고:
     print(i+1)
-'''
+
 for i in range(1,101):
     for j in range(1,101):
         m = i*j
         print(f'print({i}*{j})={m}')\
+
+def dlehdwn():
+    print('안녕하세요 중고차신뢰딜러 차은우입니다')
+    print('현재 딜러할인 최대 적용중이라 쪽지로 문의주십쇼')
+
+dlehdwn()
+'''
+def math(x,y):
+    result = x**2+2*x+1 + y
+    # result = int(result)
+    print(result)
+
+def math2(x,y):
+    return x**2+2*x+1 + y           # 이거 개사기
+
+key = [1, 2]
+key[0] = input('x값 입력해 ')
+key[1] = input('y값 입력해 ')
+for i in range(0,2):
+    key[i] = float(key[i])
+math(key[0],key[1])
+
+print(math2(key[0],key[1]))
