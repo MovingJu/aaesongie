@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # 웹페이지의 HTML 가져오기
-url = "https://namu.wiki/w/%EB%82%98%EB%AC%B4%EC%9C%84%ED%82%A4:%EB%8C%80%EB%AC%B8"
+url = "https://namu.wiki/RecentChanges"
 response = requests.get(url)
 html_content = response.text
 

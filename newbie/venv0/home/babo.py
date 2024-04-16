@@ -4,7 +4,7 @@ import sys
 player_input = input("할거임? (y or n)")
 def randnum():
     if player_input == "y":
-        bebe = random.randint(0,98)
+        bebe = random.randint(0,99)
         return bebe
     elif player_input == "n":
         print('잘가요')
