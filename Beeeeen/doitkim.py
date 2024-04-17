@@ -15,11 +15,19 @@
 # func = lambda a,b : a+b
 # print(func(1,2))
 
-fefe = lambda a : a[:11]
-senten = '''달디달고 달디달고 달디단 밤양갱 따라라라란 떠나는 길에 네가 내게 말했지 너는 바라는게 너무나 많아'''
+# fefe = lambda a : a[:11]
+# senten = '''달디달고 달디달고 달디단 밤양갱 따라라라란 떠나는 길에 네가 내게 말했지 너는 바라는게 너무나 많아'''
 # print(senten[:10])
-print(fefe(senten))
+# print(fefe(senten))
 
 # regeno = [1,2,3,4,5,6,7,8,9,10]
 # print(regeno[1:3])
 
+# sdasd = 1
+# print(type(sdasd))
+
+# sdagg = input()
+# print(type(sdagg))
+
+# asd = float(input())
+# print(round(asd))

@@ -1,5 +1,6 @@
 import os
 import time
+import sys
 
 def schndir():
     ndir = os.listdir()
@@ -45,6 +46,7 @@ def main():
     print('2. 특정 경로의 파일 확인')
     print('3. 특정 경로에 폴더 추가')
     print('4. 특정 경로의 폴더 제거')
+    print('5. 종료')
     choice = input('\n작업을 선택하세요 (번호) : ')
 
     if choice == '1':
@@ -55,6 +57,10 @@ def main():
         makedir()
     elif choice == '4':
         remodir()
+    elif choice == '5':
+        print('\n종료하였습니다\n')
+        time.sleep(0.5)
+        sys.exit()
     else:
         print('\n!! 작업 번호를 입력해주세요')
         time.sleep(1)

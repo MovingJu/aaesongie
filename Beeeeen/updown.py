@@ -7,7 +7,6 @@ def travel(x):
 
 def calcul(x):
     choice = int(input(f'\n{lim} 이하의 자연수를 제시해주세요 : '))
-
     if choice == rdnumber:
         x = x + 1
         print('\n정답!')
