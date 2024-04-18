@@ -35,7 +35,10 @@
 # pathreal = os.path.exists(r"C:\Users\windows\Desktop\aaesongie\Beeeeen\gpt\gptdiary.py")
 # print(pathreal)
 
-import os
+# import os
 
-datalist = os.listdir()
-print(datalist)
+# datalist = os.listdir()
+# print(datalist)
+
+sds=[1,2,3,4,4]
+print(len(list(set(sds))))
