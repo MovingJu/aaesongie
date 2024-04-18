@@ -1,16 +1,20 @@
+import numpy as np
 import matplotlib.pyplot as plt
 
-# 데이터 생성
-x = []
-y = []
+# 유리함수 정의
+def rational_function(x):
+    return 1 / (x**2 - 1)
 
-for i in range(-100,101):
-    x.append(i)
-    y.append(i**2 + 2*i + 1)
+# x 값 생성
+x = np.linspace(-2, 2, 400)
 
-# 선 그래프
+# 함수값 계산
+y = rational_function(x)
+
+# 그래프 그리기
 plt.plot(x, y)
-plt.xlabel('X-axis')
-plt.ylabel('Y-axis')
-plt.title('')
+plt.title('Rational Function')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.grid(True)
 plt.show()
