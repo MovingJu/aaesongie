@@ -50,7 +50,7 @@ def onevsone():
         time.sleep(1)
         secplay(bull,nobu,dlc)
 
-def dlcver():
+def dlcver():                       # 이거 구상한다고 1교시 다 씀
     dlc = 1
     bull = []
     realbul = []
