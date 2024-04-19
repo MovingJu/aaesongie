@@ -75,7 +75,7 @@ def dlcver():                       # 이거 구상한다고 1교시 다 씀
         time.sleep(1)
         secplay(bull,nobu,dlc)
 
-def firplay(bull,nobu,dlc,player):
+def firplay(bull,nobu,dlc):
     player = '1p'
     time.sleep(1)
     print(f'\n== 1p의 차례! ==      남은 탄환 : {len(bull) - nobu}/{len(bull)}')
@@ -84,7 +84,7 @@ def firplay(bull,nobu,dlc,player):
     print('\n3. 메뉴로 나가기')
     whoselect(bull,nobu,dlc,player)
 
-def secplay(bull,nobu,dlc,player):
+def secplay(bull,nobu,dlc):
     player = '2p'
     time.sleep(1)
     print(f'\n== 2p의 차례! ==       남은 탄환 : {len(bull) - nobu}/{len(bull)}')
@@ -97,22 +97,22 @@ def whoselect(bull,nobu,dlc,player):
     choice = input('\n겨냥할 사람을 선택하세요 (번호) : ')
     if choice == '1':
         if player == '1p':
-            ftfplay(bull,nobu,dlc,player)
+            ftfplay(bull,nobu,dlc)
         else:
-            stfplay(bull,nobu,dlc,player)
+            stfplay(bull,nobu,dlc)
     elif choice == '2':
         if player == '1p':
-            ftsplay(bull,nobu,dlc,player)
+            ftsplay(bull,nobu,dlc)
         else:
-            stsplay(bull,nobu,dlc,player)
+            stsplay(bull,nobu,dlc)
     elif choice == '3':
         main()
     else:
         print('\n나열된 인원 중 선택하세요')
         time.sleep(1)
-        firplay(bull,nobu,dlc,player)
+        firplay(bull,nobu,dlc)
 
-def ftsplay(bull,nobu,dlc,player):
+def ftsplay(bull,nobu,dlc):
     if bull[nobu] == 1:
         print('\n탕')
         time.sleep(2)
@@ -123,9 +123,9 @@ def ftsplay(bull,nobu,dlc,player):
         print('\n탕')
         time.sleep(2)
         print('\n2p가 죽지 않았습니다. 턴이 넘어갑니다')
-        secplay(bull,nobu,dlc,player)
+        secplay(bull,nobu,dlc)
 
-def ftfplay(bull,nobu,dlc,player):
+def ftfplay(bull,nobu,dlc):
     if bull[nobu] == 1:
         print('\n탕')
         time.sleep(2)
@@ -136,9 +136,9 @@ def ftfplay(bull,nobu,dlc,player):
         print('\n탕')
         time.sleep(2)
         print('\n1p가 죽지 않았습니다. 턴이 유지됩니다')
-        firplay(bull,nobu,dlc,player)
+        firplay(bull,nobu,dlc)
 
-def stfplay(bull,nobu,dlc,player):
+def stfplay(bull,nobu,dlc):
     if bull[nobu] == 1:
         print('\n탕')
         time.sleep(2)
@@ -149,7 +149,7 @@ def stfplay(bull,nobu,dlc,player):
         print('\n탕')
         time.sleep(2)
         print('\n1p가 죽지 않았습니다. 턴이 넘어갑니다')
-        firplay(bull,nobu,dlc,player)
+        firplay(bull,nobu,dlc)
 
 def stsplay(bull,nobu,dlc):
     if bull[nobu] == 1:
@@ -162,7 +162,7 @@ def stsplay(bull,nobu,dlc):
         print('\n탕')
         time.sleep(2)
         print('\n2p가 죽지 않았습니다. 턴이 유지됩니다')
-        secplay(bull,nobu,dlc,player)
+        secplay(bull,nobu,dlc)
 
 def aivsone():
     bull = []
