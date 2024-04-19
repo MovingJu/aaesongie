@@ -67,18 +67,13 @@ def dlcver():                       # 이거 구상한다고 1교시 다 씀
         time.sleep(1)
         dlcver()
     for m in range(0,selbul):
-        realbul.append(0)
-    for k in range(0,selbul):
-        for l in range(0,selbul):
-            if k != l:
-                while realbul[k] == realbul[l]:
-                    realbul[l] = rd.randint(0,maxbul-1)
-            else:
-                ''
+        realbul.append(rd.randint(0,maxbul-1))
+    while len(set(realbul)) < selbul:
+        realbul = list(set(realbul))
+        realbul.append(rd.randint(0,maxbul-1))
     for j in range(0,selbul):
         bull[realbul[j]] = 1
     time.sleep(1)
-    print(bull)
     print('\n선을 정합니다...')
     time.sleep(2)
     takeposi = rd.randint(1,2)
