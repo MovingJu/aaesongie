@@ -21,6 +21,7 @@ twofam = ['ㅈ','ㅉ','ㅊ']
 thrfam = ['ㅅ','ㅆ','ㅎ']
 foufam = ['ㅁ','ㄴ','ㅇ']
 fivfam = ['ㄹ']
+
 for i in range(len(onefam)):
     zaeum_dict[onefam[i]]['meth'] = '파열음'
 for i in range(len(twofam)):
@@ -32,14 +33,18 @@ for i in range(len(foufam)):
 for i in range(len(fivfam)):
     zaeum_dict[fivfam[i]]['meth'] = '유음'
 
+hanfam = ['ㅂ','ㄷ','ㄱ','ㅈ','ㅅ']
+dulfam = ['ㅃ','ㄸ','ㄲ','ㅉ','ㅆ']
+setfam = ['ㅍ','ㅌ','ㅋ','ㅊ']
+
 def zadir(x):
     print(f'\n검색하신 자음 : {x}')
-    print(f'\n조음 위치 : {zaeum_dict[x][posi]}\n조음 방법 : {zaeum_dict[x][meth]}')
+    print(f'\n조음 위치 : {zaeum_dict[x]["posi"]}\n조음 방법 : {zaeum_dict[x]["meth"]}')
 
 def zaserch():
-    search = tuple(input('무슨 자음을 검색하고 싶으신가요? : '))
+    search = input('무슨 자음을 검색하고 싶으신가요? : ')
     if search in zaeum_dict:
-        zadir(zaeum_dict[search])
+        zadir(search)
     else:
         print('자음만 입력해주세요!')
         zaserch()
