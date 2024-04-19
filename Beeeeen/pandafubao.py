@@ -45,7 +45,8 @@ def func1path(x):
 
 def func1see(x):
     time.sleep(1)
-    fucn1see = ['head',
+    fucn1see = ['all',
+                'head',
                 'tail',
                 'iloc',
                 'info']
@@ -67,6 +68,7 @@ def func1see(x):
         restart()
     elif dataseme == 'info':
         print(x.info())
+        restart()
     else:
         print('나열된 작업 중 선택해주세요')
         time.sleep(1)
