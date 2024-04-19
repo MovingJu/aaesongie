@@ -76,6 +76,8 @@ def func2():
     ''
 def func3():
     ''
+def func4():
+    ''
 
 def restart():
     outtable = {'y' : main,
