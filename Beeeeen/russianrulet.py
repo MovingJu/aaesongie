@@ -59,19 +59,26 @@ def dlcver():                       # 이거 구상한다고 1교시 다 씀
     time.sleep(1)
     maxbul = int(input('\n최대 탄환 수를 설정하세요 : '))
     selbul = int(input('실탄 개수를 설정하세요 : '))
-    for i in range(0,maxbul):
-        bull.append(0)
-        realbul.append(i)
+    if maxbul >= selbul:
+        for i in range(0,maxbul):
+            bull.append(0)
+    else:
+        print('\n실탄 개수는 최대 탄환 수보다 작아야 합니다')
+        time.sleep(1)
+        dlcver()
+    for m in range(0,selbul):
+        realbul.append(0)
     for k in range(0,selbul):
-        for l in range(1,selbul):
-            if k == l:
-                break
-            else:
+        for l in range(0,selbul):
+            if k != l:
                 while realbul[k] == realbul[l]:
-                    realbul[k] = rd.randint(1,selbul)
+                    realbul[l] = rd.randint(0,maxbul-1)
+            else:
+                ''
     for j in range(0,selbul):
         bull[realbul[j]] = 1
     time.sleep(1)
+    print(bull)
     print('\n선을 정합니다...')
     time.sleep(2)
     takeposi = rd.randint(1,2)
