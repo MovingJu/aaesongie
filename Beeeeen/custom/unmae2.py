@@ -37,9 +37,12 @@ hanfam = ['ㅂ','ㄷ','ㄱ','ㅈ','ㅅ']
 dulfam = ['ㅃ','ㄸ','ㄲ','ㅉ','ㅆ']
 setfam = ['ㅍ','ㅌ','ㅋ','ㅊ']
 
+for i in range(len(hanfam)):
+    zaeum_dict[hanfam[i]]['meth2'] = '평음'
+
 def zadir(x):
     print(f'\n검색하신 자음 : {x}')
-    print(f'\n조음 위치 : {zaeum_dict[x]["posi"]}\n조음 방법 : {zaeum_dict[x]["meth"]}')
+    print(f'\n조음 위치 : {zaeum_dict[x]["posi"]}\n조음 방법 : {zaeum_dict[x]["meth"]},{zaeum_dict[x]["meth2"]}')
 
 def zaserch():
     search = input('무슨 자음을 검색하고 싶으신가요? : ')
