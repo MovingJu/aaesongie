@@ -11,7 +11,6 @@ def main():
     print('\n===== 데이터 작업 =====\n')
     for i, j in enumerate(mainprint, start=1):
         print(f'{i}. {j}')
-    
     mainselect = {'1' : func1,
                   '2' : func2,
                   '3' : func3,
@@ -28,26 +27,68 @@ def main():
 def func1():
     typetable = {'csv' : pd.read_csv,
                  'xlsx' : pd.read_excel}
-    seetable = {''}
+    print()
+    for i in typetable:
+        print(f'{i}')
     datatype = input('\n데이터의 종류를 입력하세요 : ')
     selectedtype = typetable[datatype]
     if selectedtype:
-        func1path()
+        func1path(selectedtype)
     else:
         print('현재 csv와 xlsx만 지원합니다')
         func1()
 
-def func1path():
+def func1path(x):
     datapath = input('데이터의 경로를 입력하세요 : ')
+    df = x(datapath)
+    func1see(df)
+
+def func1see(x):
+    time.sleep(1)
+    fucn1see = ['head',
+                'tail',
+                'iloc',
+                'info']
     print()
-    dataseme = input('확인 방식을 선택하세요 : ')
-    df = selectedtype(datapath)
-    print(df)
+    for i in fucn1see:
+        print(f'{i}')
+    dataseme = input('\n확인 방식을 선택하세요 : ')
+    if dataseme == 'all':
+        print(x)
+        restart()
+    elif dataseme == 'head':
+        print(x.head(5))
+        restart()
+    elif dataseme == 'tail':
+        print(x.tail(5))
+        restart()
+    elif dataseme == 'iloc':
+        print(x.iloc[5:10, :])
+        restart()
+    elif dataseme == 'info':
+        print(x.info())
+    else:
+        print('나열된 작업 중 선택해주세요')
+        time.sleep(1)
+        func1see()
 
 def func2():
     ''
 def func3():
     ''
+
+def restart():
+    outtable = {'y' : main,
+                'n' : sys.exit}
+    time.sleep(2)
+    logout = input('\n메뉴로 돌아가시겠어요? (y/n) : ')
+    selectedout = outtable[logout]
+    if selectedout:
+        selectedout()
+    else:
+        print('나열된 작업 중 선택해주세요')
+        restart()
+
 
 if __name__ == '__main__':
     main()
