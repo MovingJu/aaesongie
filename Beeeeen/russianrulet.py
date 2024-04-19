@@ -26,16 +26,10 @@ def main():
 
 def onevsone():
     dlc = 0
-    bull = []
     nobu = 0
+    bull = [0] * 6
     realbul = rd.randint(0,5)
-    
-    for i in range(0,6):
-        if i == realbul:
-            bull.append(1)
-        else:
-            bull.append(0)
-
+    bull[realbul] = 1
     print('\n\n===== 러시안 룰렛 [1vs1전] =====')
     time.sleep(1)
     print('\n선을 정합니다...')
@@ -52,22 +46,17 @@ def onevsone():
 
 def dlcver():                       # 이거 구상한다고 1교시 다 씀
     dlc = 1
-    bull = []
-    realbul = []
-    nobu = 0
     print('\n\n===== 러시안 룰렛 [1vs1 확장판] =====')
     time.sleep(1)
     maxbul = int(input('\n최대 탄환 수를 설정하세요 : '))
     selbul = int(input('실탄 개수를 설정하세요 : '))
-    if maxbul >= selbul:
-        for i in range(0,maxbul):
-            bull.append(0)
-    else:
+    if maxbul < selbul:
         print('\n실탄 개수는 최대 탄환 수보다 작아야 합니다')
         time.sleep(1)
         dlcver()
-    for m in range(0,selbul):
-        realbul.append(rd.randint(0,maxbul-1))
+    bull = [0] * maxbul
+    realbul = [rd.randint(0,maxbul-1)] * selbul
+    nobu = 0
     while len(set(realbul)) < selbul:
         realbul = list(set(realbul))
         realbul.append(rd.randint(0,maxbul-1))
@@ -86,43 +75,44 @@ def dlcver():                       # 이거 구상한다고 1교시 다 씀
         time.sleep(1)
         secplay(bull,nobu,dlc)
 
-def firplay(bull,nobu,dlc):
+def firplay(bull,nobu,dlc,player):
+    player = '1p'
     time.sleep(1)
     print(f'\n== 1p의 차례! ==      남은 탄환 : {len(bull) - nobu}/{len(bull)}')
     print('\n1. 1p (자신)')
     print('2. 2p')
     print('\n3. 메뉴로 나가기')
-    choice = input('\n겨냥할 사람을 선택하세요 (번호) : ')
-    if choice == '1':
-        ftfplay(bull,nobu,dlc)
-    elif choice == '2':
-        ftsplay(bull,nobu,dlc)
-    elif choice == '3':
-        main()
-    else:
-        print('\n나열된 인원 중 선택하세요')
-        time.sleep(1)
-        firplay(bull,nobu,dlc)
+    whoselect(bull,nobu,dlc,player)
 
-def secplay(bull,nobu,dlc):
+def secplay(bull,nobu,dlc,player):
+    player = '2p'
     time.sleep(1)
     print(f'\n== 2p의 차례! ==       남은 탄환 : {len(bull) - nobu}/{len(bull)}')
     print('\n1. 1p')
     print('2. 2p (자신)')
     print('\n3. 메뉴로 나가기')
+    whoselect(bull,nobu,dlc,player)
+
+def whoselect(bull,nobu,dlc,player):
     choice = input('\n겨냥할 사람을 선택하세요 (번호) : ')
     if choice == '1':
-        stfplay(bull,nobu,dlc)
+        if player == '1p':
+            ftfplay(bull,nobu,dlc,player)
+        else:
+            stfplay(bull,nobu,dlc,player)
     elif choice == '2':
-        stsplay(bull,nobu,dlc)
+        if player == '1p':
+            ftsplay(bull,nobu,dlc,player)
+        else:
+            stsplay(bull,nobu,dlc,player)
     elif choice == '3':
         main()
     else:
         print('\n나열된 인원 중 선택하세요')
         time.sleep(1)
-        secplay(bull,nobu,dlc)
+        firplay(bull,nobu,dlc,player)
 
-def ftsplay(bull,nobu,dlc):
+def ftsplay(bull,nobu,dlc,player):
     if bull[nobu] == 1:
         print('\n탕')
         time.sleep(2)
@@ -133,9 +123,9 @@ def ftsplay(bull,nobu,dlc):
         print('\n탕')
         time.sleep(2)
         print('\n2p가 죽지 않았습니다. 턴이 넘어갑니다')
-        secplay(bull,nobu,dlc)
+        secplay(bull,nobu,dlc,player)
 
-def ftfplay(bull,nobu,dlc):
+def ftfplay(bull,nobu,dlc,player):
     if bull[nobu] == 1:
         print('\n탕')
         time.sleep(2)
@@ -146,9 +136,9 @@ def ftfplay(bull,nobu,dlc):
         print('\n탕')
         time.sleep(2)
         print('\n1p가 죽지 않았습니다. 턴이 유지됩니다')
-        firplay(bull,nobu,dlc)
+        firplay(bull,nobu,dlc,player)
 
-def stfplay(bull,nobu,dlc):
+def stfplay(bull,nobu,dlc,player):
     if bull[nobu] == 1:
         print('\n탕')
         time.sleep(2)
@@ -159,7 +149,7 @@ def stfplay(bull,nobu,dlc):
         print('\n탕')
         time.sleep(2)
         print('\n1p가 죽지 않았습니다. 턴이 넘어갑니다')
-        firplay(bull,nobu,dlc)
+        firplay(bull,nobu,dlc,player)
 
 def stsplay(bull,nobu,dlc):
     if bull[nobu] == 1:
@@ -172,7 +162,7 @@ def stsplay(bull,nobu,dlc):
         print('\n탕')
         time.sleep(2)
         print('\n2p가 죽지 않았습니다. 턴이 유지됩니다')
-        secplay(bull,nobu,dlc)
+        secplay(bull,nobu,dlc,player)
 
 def aivsone():
     bull = []
