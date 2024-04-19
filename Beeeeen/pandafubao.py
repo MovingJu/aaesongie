@@ -89,6 +89,5 @@ def restart():
         print('나열된 작업 중 선택해주세요')
         restart()
 
-
 if __name__ == '__main__':
     main()
