@@ -36,12 +36,36 @@ for i in range(len(fivfam)):
 hanfam = ['ㅂ','ㄷ','ㄱ','ㅈ','ㅅ']
 dulfam = ['ㅃ','ㄸ','ㄲ','ㅉ','ㅆ']
 setfam = ['ㅍ','ㅌ','ㅋ','ㅊ']
+netfam = ['ㅎ','ㅁ','ㄴ','ㅇ','ㄹ']
 
 for i in range(len(hanfam)):
     zaeum_dict[hanfam[i]]['meth2'] = '평음'
+for i in range(len(dulfam)):
+    zaeum_dict[dulfam[i]]['meth2'] = '경음'
+for i in range(len(setfam)):
+    zaeum_dict[setfam[i]]['meth2'] = '격음'
+for i in range(len(netfam)):
+    zaeum_dict[netfam[i]]['meth2'] = '없음'
+
+def main():
+    choicetable = {'자음' : zaserch,
+                   '모음' : moserch}
+    choice = input(f'\n무슨 음운을 검색하고 싶으신가요? : ')
+    choicever = choicetable[choice]
+    if choicever:
+        choicever()
 
 def zadir(x):
+    print('\n===========================')
     print(f'\n검색하신 자음 : {x}')
+    if zaeum_dict[x]['meth2'] == '없음':
+        print(f'\n조음 위치 : {zaeum_dict[x]["posi"]}\n조음 방법 : {zaeum_dict[x]["meth"]}')        
+    else:
+        print(f'\n조음 위치 : {zaeum_dict[x]["posi"]}\n조음 방법 : {zaeum_dict[x]["meth"]},{zaeum_dict[x]["meth2"]}')
+    print('\n===========================')
+
+def modir(x):
+    print(f'\n검색하신 모음 : {x}')
     print(f'\n조음 위치 : {zaeum_dict[x]["posi"]}\n조음 방법 : {zaeum_dict[x]["meth"]},{zaeum_dict[x]["meth2"]}')
 
 def zaserch():
@@ -52,4 +76,13 @@ def zaserch():
         print('자음만 입력해주세요!')
         zaserch()
 
-zaserch()
+def moserch():
+    search = input('무슨 모음을 검색하고 싶으신가요? : ')
+    if search in moeum_dict:
+        modir(search)
+    else:
+        print('모음만 입력해주세요!')
+        moserch()
+
+if __name__ == '__main__':
+    main()

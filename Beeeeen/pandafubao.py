@@ -1,6 +1,7 @@
 import sys
 import time
 import pandas as pd
+import os
 import matplotlib.pyplot as plt
 
 def main():
@@ -8,7 +9,7 @@ def main():
                  '데이터 수정하기',
                  '데이터 시각화하기',
                  '종료']
-    print('\n===== 데이터 작업 =====\n')
+    print('\n======== 데이터 작업 ========\n')
     for i, j in enumerate(mainprint, start=1):
         print(f'{i}. {j}')
     mainselect = {'1' : func1,
@@ -16,7 +17,7 @@ def main():
                   '3' : func3,
                   '4' : sys.exit}
     select = input('\n어떤 작업을 하시겠어요? : ')
-    selected = mainselect[select]
+    selected = mainselect.get(select)
     if selected:
         selected()
     else:
@@ -31,17 +32,22 @@ def func1():
     for i in typetable:
         print(f'{i}')
     datatype = input('\n데이터의 종류를 입력하세요 : ')
-    selectedtype = typetable[datatype]
+    selectedtype = typetable.get(datatype)
     if selectedtype:
         func1path(selectedtype)
     else:
-        print('현재 csv와 xlsx만 지원합니다')
+        print('\n현재 csv와 xlsx만 지원합니다')
+        time.sleep(1)
         func1()
 
 def func1path(x):
     datapath = input('데이터의 경로를 입력하세요 : ')
-    df = x(datapath)
-    func1see(df)
+    if os.path.exists(datapath):
+        df = x(datapath)
+        func1see(df)
+    else:
+        print('정확한 경로를 입력해주세요')
+        func1path(x)
 
 def func1see(x):
     time.sleep(1)
@@ -86,7 +92,7 @@ def restart():
                 'n' : sys.exit}
     time.sleep(2)
     logout = input('\n메뉴로 돌아가시겠어요? (y/n) : ')
-    selectedout = outtable[logout]
+    selectedout = outtable.get(logout)
     if selectedout:
         selectedout()
     else:
