@@ -18,7 +18,7 @@ def main():
 
 def yesorno(count):
     selectdict = {
-        '1' : gotcha,
+        '' : gotcha,
         '2' : outgame
     }
     # print('\n1 : yes\n2 : no')
