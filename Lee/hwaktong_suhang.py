@@ -1,35 +1,50 @@
 import pandas as pd
-import matplotlib.pyplot as plt
+import numpy as np
 
-# Load the data
-df = pd.read_csv('/home/galesky/Downloads/시도_인구동태건수_및_동태율_출생_사망_혼인_이혼__20240617191039.csv')
+# 엑셀 파일 경로 설정
+file_path = "/home/galesky/Downloads/test.xlsx"
 
-# Print the columns to debug
-print("Columns in DataFrame:", df.columns)
+# 엑셀 파일 읽기
+df = pd.read_excel(file_path)
 
-# Rename columns if necessary (this step assumes the first column might have a different name)
-df.rename(columns={df.columns[0]: 'Region'}, inplace=True)
+# 데이터프레임의 열 이름 확인
+print(df.columns)
 
-# Set the 'Region' column as the index
-df.set_index('Region', inplace=True)
+# 필요한 열만 선택
+columns_of_interest = ['행정구역별', '시점', '합계출산율', '조출생률(천명당)', '사망건수(명)', '조사망률(천명당)', 
+                       '자연증가건수(명)', '자연증가율(천명당)', '혼인건수(건)', '조혼인율(천명당)', 
+                       '이혼건수(건)', '조이혼율(천명당)']
 
-# Print the DataFrame to ensure it's correctly formatted
-print(df)
+# 필터링된 열로 데이터프레임 재구성
+df = df[columns_of_interest]
 
-# Plot the data
-plt.figure(figsize=(12, 8))
-for region in df.index:
-    plt.plot(df.columns, df.loc[region], marker='o', label=region)
+# 연도별로 데이터 처리
+years = df['시점'].unique()
 
-plt.title('Total Fertility Rate by Region (2010-2011)')
-plt.xlabel('Year')
-plt.ylabel('Total Fertility Rate')
-plt.legend(title='Region', bbox_to_anchor=(1.05, 1), loc='upper left')
-plt.grid(True)
-plt.tight_layout()
+# 결과를 저장할 데이터프레임 초기화
+result_df = pd.DataFrame(columns=['시점', '행정구역별', '합계출산율과의 상관 계수'])
 
-# Save the plot as an image
-plt.savefig('/mnt/data/fertility_rate_trend.png')
+# 각 연도별로 처리
+for year in years:
+    # 해당 연도의 데이터 추출
+    year_data = df[df['시점'] == year]
+    
+    # 행정구역별로 상관 계수 계산
+    regions = year_data['행정구역별'].unique()
+    
+    for region in regions:
+        # 해당 지역의 데이터 추출
+        region_data = year_data[year_data['행정구역별'] == region]
+        
+        # 합계출산율과 다른 요소들 간의 상관 계수 계산
+        corr_with_tfr = region_data.corr()['합계출산율']
+        
+        # 합계출산율과의 상관 계수만 추출하여 저장
+        correlation_value = corr_with_tfr.drop('합계출산율')['합계출산율']
+        
+        # 결과를 데이터프레임에 추가
+        result_df = result_df.append({'시점': year, '행정구역별': region, '합계출산율과의 상관 계수': correlation_value}, ignore_index=True)
 
-# Show the plot
-plt.show()
+# 결과 출력
+print("연도별 지역별 합계출산율과의 상관 계수:")
+print(result_df)
