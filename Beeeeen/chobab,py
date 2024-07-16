@@ -1,0 +1,33 @@
+import tkinter as tk
+import random as rd
+
+class Item:
+    def __init__(self, name, level=0):
+        self.name = name
+        self.level = level
+
+    def __str__(self):
+        return f"{self.name} {self.level}단계"
+
+item = Item("검")
+
+def enhance(item, suc_per):
+    if rd.random() < suc_per:
+        item.level += 1
+        suc_per -= 0.02
+        print("성공")
+    else:
+        print("실패")
+
+suc_per = 0.9
+
+root = tk.Tk()
+root.title("검 강화하기")
+
+label_item = tk.Label(root, text=str(item))
+label_item.pack()
+
+button_enhance = tk.Button(root, text="강화", command=lambda: enhance(item, suc_per))
+button_enhance.pack()
+
+root.mainloop()
