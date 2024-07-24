@@ -50,7 +50,7 @@ for i in range(len(netfam)):
 def main():
     choicetable = {'자음' : zaserch,
                    '모음' : moserch}
-    choice = input(f'\n무슨 음운을 검색하고 싶으신가요? : ')
+    choice = input('\n무슨 음운을 검색하고 싶으신가요? : ')
     choicever = choicetable[choice]
     if choicever:
         choicever()
