@@ -85,7 +85,7 @@ def lsm(n: int, li: list[tuple[float, float]]) -> NDArray[np.float64]:
         raise ValueError("다항식의 계수를 계산할 수 없음. 오류: " + str(e))
     
 
-    
+
 if __name__ == "__main__":
 
     print("bogan(3, [(1, 3), (2, -2), (3, -5), (4, 0)])")
