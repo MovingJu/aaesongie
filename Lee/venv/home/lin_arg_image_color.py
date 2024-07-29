@@ -46,5 +46,7 @@ print(f'Total size after SVD operations (bytes): {tot_bytes}')
 print(f'Ratio of total size to original size: {tot_bytes / dodo.nbytes:.2f}')
 
 # 복원된 이미지 저장
-cv2.imwrite('image.png', image)
-print('복원된 이미지가 저장되었습니다: image.png')
+cv2.imwrite('image.jpg', image)
+print('복원된 이미지가 저장되었습니다: image.jpg')
+
+print(dodo.nbytes, image.nbytes)
