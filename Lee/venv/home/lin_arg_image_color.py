@@ -2,36 +2,49 @@ import numpy as np
 import cv2
 
 # 이미지 파일을 불러옵니다
-image_path = 'doggy.png'
+dodo = cv2.imread('dodo.jpg')
+print(dodo.shape)
 
-# 흑백 이미지로 불러오기
-gray_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+# 채널 분리
+blu, gre, red = cv2.split(dodo)
 
-U, S, VT = np.linalg.svd(gray_image)
+# 각 채널을 저장할 리스트
+dodo1 = [blu, gre, red]
 
-S = S[:25]
-VT1 = VT[:len(S), :1002]
-U1 = U[:635, :len(S)]
-S1 = np.diag(S)
+# 총 바이트 수 계산용 변수
+tot_bytes = 0
 
-print(U1.shape, S.shape, VT1.shape)
+# 각 채널에 대해 SVD 수행 및 복원
+for rep in range(3):
+    # 현재 채널 선택
+    channel = dodo1[rep]
+    
+    # SVD 수행
+    U, S, VT = np.linalg.svd(channel, full_matrices=False)
+    
+    # SVD를 통한 채널 복원
+    S = S[:100]
+    S1 = np.diag(S)
+    VT1 = VT[:len(S), :]
+    U1 = U[:, :len(S)]
+    
+    # 채널 복원
+    dodo1[rep] = np.dot(U1, np.dot(S1, VT1))
+    
+    # 총 바이트 수 계산
+    tot_bytes += (S.nbytes + VT1.nbytes + U1.nbytes)
 
-# # 이미지 윈도우에 표시
-# cv2.imshow('Gray Image', np.dot(U, np.dot(S1, VT1)))
-# cv2.waitKey(0)  # 아무 키나 누르면 윈도우 닫기
-# cv2.destroyAllWindows()
+# 채널을 합쳐 색상 이미지 복원
+image = cv2.merge((dodo1[0], dodo1[1], dodo1[2]))
 
+# 색상 이미지 복원된 이미지 타입을 uint8로 변환 (픽셀 값이 0-255 범위에 있도록 클리핑)
+image = np.clip(image, 0, 255).astype(np.uint8)
 
-if np.allclose(np.dot(U1, np.dot(S1, VT1)), gray_image):
-    print('success!')
-    print(f'{gray_image.nbytes}, {U1.nbytes + S.nbytes + VT1.nbytes}')
-    print(f'{int((U1.nbytes + S.nbytes + VT1.nbytes)/gray_image.nbytes)} times bigger')
+# 결과 출력
+print(f'Original image size (bytes): {dodo.nbytes}')
+print(f'Total size after SVD operations (bytes): {tot_bytes}')
+print(f'Ratio of total size to original size: {tot_bytes / dodo.nbytes:.2f}')
 
-else:
-    print('nah')
-    print(f'{gray_image.nbytes}, {U1.nbytes + S.nbytes + VT1.nbytes}')
-    print(f'{int((U1.nbytes + S.nbytes + VT1.nbytes)/gray_image.nbytes)} times bigger')
-
-output_path = 'gray_image.png'
-cv2.imwrite(output_path, gray_image.astype(np.uint8))
-print(f'복원된 이미지를 {output_path}로 저장했습니다.')
+# 복원된 이미지 저장
+cv2.imwrite('image.png', image)
+print('복원된 이미지가 저장되었습니다: image.png')

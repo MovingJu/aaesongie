@@ -9,9 +9,9 @@ gray_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
 U, S, VT = np.linalg.svd(gray_image)
 
-S = S[:25]
-VT1 = VT[:len(S), :1002]
-U1 = U[:635, :len(S)]
+S = S[:50]
+VT1 = VT[:len(S), :len(VT[0])]
+U1 = U[:len(U), :len(S)]
 S1 = np.diag(S)
 
 print(U1.shape, S.shape, VT1.shape)
@@ -22,15 +22,8 @@ print(U1.shape, S.shape, VT1.shape)
 # cv2.destroyAllWindows()
 
 
-if np.allclose(np.dot(U1, np.dot(S1, VT1)), gray_image):
-    print('success!')
-    print(f'{gray_image.nbytes}, {U1.nbytes + S.nbytes + VT1.nbytes}')
-    print(f'{int((U1.nbytes + S.nbytes + VT1.nbytes)/gray_image.nbytes)} times bigger')
-
-else:
-    print('nah')
-    print(f'{gray_image.nbytes}, {U1.nbytes + S.nbytes + VT1.nbytes}')
-    print(f'{int((U1.nbytes + S.nbytes + VT1.nbytes)/gray_image.nbytes)} times bigger')
+print(f'{gray_image.nbytes}, {U1.nbytes + S.nbytes + VT1.nbytes}')
+print(f'{(U1.nbytes + S.nbytes + VT1.nbytes)/gray_image.nbytes: .2f} times bigger')
 
 output_path = 'gray_image.png'
 cv2.imwrite(output_path, gray_image.astype(np.uint8))
