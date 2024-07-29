@@ -16,17 +16,20 @@ tot_bytes = 0
 
 # 각 채널에 대해 SVD 수행 및 복원
 for rep in range(3):
-    # 현재 채널 선택
-    channel = dodo1[rep]
     
     # SVD 수행
-    U, S, VT = np.linalg.svd(channel, full_matrices=False)
+    U, S, VT = np.linalg.svd(dodo1[rep], full_matrices=False)
     
     # SVD를 통한 채널 복원
-    S = S[:100]
+    k = min(100, len(S))
+    S = S[:k]
+    S = np.array(S, dtype=np.int32)
     S1 = np.diag(S)
     VT1 = VT[:len(S), :]
     U1 = U[:, :len(S)]
+
+    print(S)
+    print(S.nbytes)
     
     # 채널 복원
     dodo1[rep] = np.dot(U1, np.dot(S1, VT1))
@@ -48,5 +51,3 @@ print(f'Ratio of total size to original size: {tot_bytes / dodo.nbytes:.2f}')
 # 복원된 이미지 저장
 cv2.imwrite('image.jpg', image)
 print('복원된 이미지가 저장되었습니다: image.jpg')
-
-print(dodo.nbytes, image.nbytes)
