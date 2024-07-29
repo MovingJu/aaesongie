@@ -21,12 +21,15 @@ for rep in range(3):
     U, S, VT = np.linalg.svd(dodo1[rep], full_matrices=False)
     
     # SVD를 통한 채널 복원
-    k = min(100, len(S))
+    k = int(len(S)/6)
     S = S[:k]
-    S = np.array(S, dtype=np.int32)
     S1 = np.diag(S)
     VT1 = VT[:len(S), :]
     U1 = U[:, :len(S)]
+
+    S = np.array(S, dtype=np.int32)
+    U1 = np.array(U1, dtype=np.float16)
+    VT1 = np.array(VT1, dtype=np.float16)
 
     print(S)
     print(S.nbytes)
