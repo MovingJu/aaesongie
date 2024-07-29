@@ -20,7 +20,7 @@ for rep in range(3):
     # SVD 수행
     U, S, VT = np.linalg.svd(dodo1[rep], full_matrices=False)
     
-    # SVD를 통한 채널 복원
+    # SVD를 통한 채널 복원zx
     k = int(len(S)/6)
     S = S[:k]
     S1 = np.diag(S)
