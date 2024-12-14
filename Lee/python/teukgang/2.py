@@ -1,8 +1,13 @@
 import os
 import tensorflow as tf
-from tensorflow.keras import layers, models
+from tensorflow.keras import layers, models # type: ignore
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.utils import load_img, img_to_array
+from tensorflow.keras.datasets import cifar10
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import *
+from tensorflow.python.keras.models import load_model
+
 
 size = 128
 
@@ -43,19 +48,65 @@ test_generator = test_datagen.flow_from_directory(
 # ])
 
 
-# 모델 정의
-model = tf.keras.Sequential([
-    tf.keras.layers.Conv2D(32, (3,3), padding="same", activation="relu", input_shape=(size, size, 3)),
-    # tf.keras.layers.Input(shape=(size, size, 3)),  # 이미지 크기에 맞는 입력층 (128x128x3)
-    tf.keras.layers.Flatten(),  # 3D 이미지를 1D 벡터로 변환
-    tf.keras.layers.Dense(64, activation="relu"),
-    tf.keras.layers.Dense(128, activation="relu"),
+# # 모델 정의
+# model = tf.keras.Sequential([
+#     tf.keras.layers.Conv2D(32, (3,3), padding="same", activation="relu", input_shape=(size, size, 3)),
+#     # tf.keras.layers.Input(shape=(size, size, 3)),  # 이미지 크기에 맞는 입력층 (128x128x3)
+#     tf.keras.layers.Flatten(),  # 3D 이미지를 1D 벡터로 변환
+#     tf.keras.layers.Dense(64, activation="relu"),
+#     tf.keras.layers.Dense(128, activation="relu"),
 
 
-    tf.keras.layers.Dense(1, activation="sigmoid"),  # 이진 분류를 위한 출력층
-])
+#     tf.keras.layers.Dense(1, activation="sigmoid"),  # 이진 분류를 위한 출력층
+# ])
+
+# Adjust the input shape and model accordingly
+model = Sequential()
+
+# layer 1
+model.add(Conv2D(32, (3, 3), padding='same', input_shape=(size, size, 3), activation='relu'))  # use (128, 128, 3)
+model.add(BatchNormalization())
+model.add(Conv2D(32, (3, 3), activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.2))
+
+# layer 2
+model.add(Conv2D(64, (3, 3), padding='same', activation='relu'))
+model.add(BatchNormalization())
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.3))
+
+# layer 3
+model.add(Conv2D(128, (3, 3), padding='same', activation='relu'))
+model.add(BatchNormalization())
+model.add(Conv2D(128, (3, 3), padding='same', activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.4))
+
+# layer 4
+model.add(Conv2D(256, (3, 3), padding='same', activation='relu'))
+model.add(BatchNormalization())
+model.add(Conv2D(256, (3, 3), padding='same', activation='relu'))
+model.add(BatchNormalization())
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.4))
+
+# Flatten the convolutional outputs
+model.add(Flatten())
+
+# Fully connected layers
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.4))
+
+# Output layer for binary classification
+model.add(Dense(1, activation='sigmoid'))
 
 model.summary()
+
 
 # 모델 컴파일
 model.compile(optimizer='adam',
