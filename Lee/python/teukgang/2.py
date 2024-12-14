@@ -1,13 +1,10 @@
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 import tensorflow as tf
-from tensorflow.keras import layers, models # type: ignore
+import numpy as np
+from tensorflow.keras import layers, models
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.utils import load_img, img_to_array
-from tensorflow.keras.datasets import cifar10
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import *
-from tensorflow.python.keras.models import load_model
-
+from tensorflow.keras.utils import img_to_array, load_img
 
 size = 128
 
@@ -48,64 +45,46 @@ test_generator = test_datagen.flow_from_directory(
 # ])
 
 
-# # 모델 정의
-# model = tf.keras.Sequential([
-#     tf.keras.layers.Conv2D(32, (3,3), padding="same", activation="relu", input_shape=(size, size, 3)),
-#     # tf.keras.layers.Input(shape=(size, size, 3)),  # 이미지 크기에 맞는 입력층 (128x128x3)
-#     tf.keras.layers.Flatten(),  # 3D 이미지를 1D 벡터로 변환
-#     tf.keras.layers.Dense(64, activation="relu"),
-#     tf.keras.layers.Dense(128, activation="relu"),
+# 모델 정의
+model = tf.keras.Sequential([
 
+    tf.keras.layers.Conv2D(32, (3,3), padding="same", activation="relu", input_shape=(size, size, 3)),
+    # tf.keras.layers.Flatten(),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.Conv2D(32, (3,3), activation="relu"),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+    tf.keras.layers.Dropout(0.2),
 
-#     tf.keras.layers.Dense(1, activation="sigmoid"),  # 이진 분류를 위한 출력층
-# ])
+    tf.keras.layers.Conv2D(64, (3,3), activation="relu"),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.Conv2D(64, (3,3), activation="relu"),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+    tf.keras.layers.Dropout(0.3),
 
-# Adjust the input shape and model accordingly
-model = Sequential()
+    tf.keras.layers.Conv2D(128, (3,3), activation="relu"),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.Conv2D(128, (3,3), activation="relu"),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+    tf.keras.layers.Dropout(0.4),
+    
+    tf.keras.layers.Conv2D(256, (3,3), activation="relu"),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.Conv2D(256, (3,3), activation="relu"),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+    tf.keras.layers.Dropout(0.4),
 
-# layer 1
-model.add(Conv2D(32, (3, 3), padding='same', input_shape=(size, size, 3), activation='relu'))  # use (128, 128, 3)
-model.add(BatchNormalization())
-model.add(Conv2D(32, (3, 3), activation='relu'))
-model.add(BatchNormalization())
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.2))
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(512, activation="relu"),
+    tf.keras.layers.BatchNormalization(),
+    tf.keras.layers.Dropout(0.4),
 
-# layer 2
-model.add(Conv2D(64, (3, 3), padding='same', activation='relu'))
-model.add(BatchNormalization())
-model.add(Conv2D(64, (3, 3), activation='relu'))
-model.add(BatchNormalization())
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.3))
+    tf.keras.layers.Dense(1, activation="sigmoid")
+])
 
-# layer 3
-model.add(Conv2D(128, (3, 3), padding='same', activation='relu'))
-model.add(BatchNormalization())
-model.add(Conv2D(128, (3, 3), padding='same', activation='relu'))
-model.add(BatchNormalization())
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.4))
-
-# layer 4
-model.add(Conv2D(256, (3, 3), padding='same', activation='relu'))
-model.add(BatchNormalization())
-model.add(Conv2D(256, (3, 3), padding='same', activation='relu'))
-model.add(BatchNormalization())
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.4))
-
-# Flatten the convolutional outputs
-model.add(Flatten())
-
-# Fully connected layers
-model.add(Dense(128, activation='relu'))
-model.add(Dropout(0.4))
-
-# Output layer for binary classification
-model.add(Dense(1, activation='sigmoid'))
-
-model.summary()
 
 
 # 모델 컴파일
@@ -126,22 +105,3 @@ print(f"테스트 정확도: {test_acc:.4f}")
 
 # 모델 저장 (선택 사항)
 model.save('image_classification_model.h5')
-
-# 저장된 모델 불러오기 (선택 사항)
-# loaded_model = tf.keras.models.load_model('image_classification_model.h5')
-
-# 임의의 이미지에 대해 중독 확률 예측
-def predict_image(image_path):
-    img = load_img(image_path, target_size=(size, size))  # 이미지 크기 조정
-    img_array = img_to_array(img)  # 정규화 없이 배열로 변환
-    img_array = tf.expand_dims(img_array, axis=0)  # 배치 차원 추가
-    prediction = model.predict(img_array)
-    
-    # 확률 출력
-    prob = prediction[0][0]
-    print(f"이미지 '{image_path}'의 중독 확률: {prob:.4f}")
-
-
-# 예제 이미지 예측
-predict_image('./teukgang/Drug Addicted or Not People - DANP/test/Not Addicted/1.png')
-predict_image('./teukgang/Drug Addicted or Not People - DANP/test/Addicted/1.png')
