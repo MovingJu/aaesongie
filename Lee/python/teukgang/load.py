@@ -6,8 +6,8 @@ from tensorflow.keras.utils import load_img, img_to_array
 import os
 
 # 데이터 경로 설정
-train_dir = './Drug Addicted or Not People - DANP/train'
-test_dir = './Drug Addicted or Not People - DANP/test'
+train_dir = './teukgang/Drug Addicted or Not People - DANP/train'
+test_dir = './teukgang/Drug Addicted or Not People - DANP/test'
 
 def predict_image(image_path):
     img = load_img(image_path, target_size=(128, 128))  # 이미지 크기 조정
@@ -20,5 +20,5 @@ def predict_image(image_path):
 loaded_model = tf.keras.models.load_model('image_classification_model.h5')
 
 for i in range(1, 41, 1):
-    predict_image(f'./Drug Addicted or Not People - DANP/test/Not Addicted/{i}.png')
-    predict_image(f'./Drug Addicted or Not People - DANP/test/Addicted/{i}.png')
+    predict_image(f'./teukgang/Drug Addicted or Not People - DANP/test/Not Addicted/{i}.png')
+    predict_image(f'./teukgang/Drug Addicted or Not People - DANP/test/Addicted/{i}.png')
