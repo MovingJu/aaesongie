@@ -11,8 +11,8 @@ from sklearn.model_selection import KFold  # KFold 임포트
 size = 64  # 입력 이미지 크기를 유지
 
 # 데이터 경로 설정
-train_dir = './teukgang/danp/train'
-test_dir = './teukgang/danp/test'
+train_dir = './teukgang/Drug Addicted or Not People - DANP/train'
+test_dir = './teukgang/Drug Addicted or Not People - DANP/test'
 
 # 이미지 파일 경로와 라벨 리스트 생성
 image_files = []

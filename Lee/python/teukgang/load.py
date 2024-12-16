@@ -42,7 +42,7 @@ test_generator = test_datagen.flow_from_directory(
 test_loss, test_acc = loaded_model.evaluate(test_generator)
 
 # 테스트 정확도 출력
-print(f"Test accuracy: {test_acc:.4f}")
+print(f"Test accuracy: {test_acc}")
 
 # 예시 이미지 예측 (개별 이미지)
 print("Final test result for the input image:")

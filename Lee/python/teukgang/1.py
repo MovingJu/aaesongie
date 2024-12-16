@@ -10,8 +10,8 @@ from tensorflow.keras.layers import GlobalAveragePooling2D
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
 # 데이터 경로 설정
-train_dir = './teukgang/Drug Addicted or Not People - DANP/train'
-test_dir = './teukgang/Drug Addicted or Not People - DANP/test'
+train_dir = './teukgang/danp/train'
+test_dir = './teukgang/danp/test'
 
 
 size = 64

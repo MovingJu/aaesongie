@@ -9,7 +9,7 @@ from tensorflow.keras.applications import VGG16
 from tensorflow.keras.layers import GlobalAveragePooling2D, Conv2D, MaxPooling2D, BatchNormalization
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
-size = 128  # 이미지 크기 증가
+size = 64
 
 # 데이터 경로 설정
 train_dir = './teukgang/Drug Addicted or Not People - DANP/train'
