@@ -12,8 +12,8 @@ from tensorflow.keras.layers import GlobalAveragePooling2D, BatchNormalization, 
 size = 64  # 입력 이미지 크기를 유지
 
 # 데이터 경로 설정
-train_dir = './teukgang/Drug Addicted or Not People - DANP/train'
-test_dir = './teukgang/Drug Addicted or Not People - DANP/test'
+train_dir = './teukgang/danp/train'
+test_dir = './teukgang/danp/test'
 
 # 이미지 파일 경로와 라벨 리스트 생성
 image_files = []

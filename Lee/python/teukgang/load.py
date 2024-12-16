@@ -53,15 +53,15 @@ print(f"Predicted probability of addiction: {addicted_prob}, Result: {result}")
 final_score = round((test_acc * (1 - addicted_prob) * 100), 4)
 print(f"Your score: {final_score}")
 
-# # 추가적으로 여러 이미지에 대한 예측을 수행하는 코드:
-# for i in range(1, 41):  # 예시: 1번부터 40번까지
-#     image_path_not_addicted = f'./teukgang/Drug Addicted or Not People - DANP/test/Not Addicted/{i}.png'
-#     image_path_addicted = f'./teukgang/Drug Addicted or Not People - DANP/test/Addicted/{i}.png'
+# 추가적으로 여러 이미지에 대한 예측을 수행하는 코드:
+for i in range(1, 41):  # 예시: 1번부터 40번까지
+    image_path_not_addicted = f'./teukgang/Drug Addicted or Not People - DANP/test/Not Addicted/{i}.png'
+    image_path_addicted = f'./teukgang/Drug Addicted or Not People - DANP/test/Addicted/{i}.png'
 
-#     # 중독되지 않은 이미지 예측
-#     not_addicted_prob, result = predict_image(image_path_not_addicted)
-#     print(f"이미지 '{image_path_not_addicted}'의 중독 확률: {not_addicted_prob} ({result})")
+    # 중독되지 않은 이미지 예측
+    not_addicted_prob, result = predict_image(image_path_not_addicted)
+    print(f"이미지 '{image_path_not_addicted}'의 중독 확률: {not_addicted_prob} ({result})")
 
-#     # 중독된 이미지 예측
-#     addicted_prob, result = predict_image(image_path_addicted)
-#     print(f"이미지 '{image_path_addicted}'의 중독 확률: {addicted_prob} ({result})")
+    # 중독된 이미지 예측
+    addicted_prob, result = predict_image(image_path_addicted)
+    print(f"이미지 '{image_path_addicted}'의 중독 확률: {addicted_prob} ({result})")
