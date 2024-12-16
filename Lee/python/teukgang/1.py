@@ -4,90 +4,41 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.keras import layers, models
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from sklearn.model_selection import KFold
 from tensorflow.keras.utils import img_to_array, load_img
-
-size = 128
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras.layers import GlobalAveragePooling2D
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
 # 데이터 경로 설정
 train_dir = './teukgang/Drug Addicted or Not People - DANP/train'
+test_dir = './teukgang/Drug Addicted or Not People - DANP/test'
+
+
+size = 64
+
 
 # 데이터 전처리 및 증강
-train_datagen = ImageDataGenerator(rescale=1./255)
+train_datagen = ImageDataGenerator(
+    rescale=1./255,              # 정규화
+    rotation_range=30,          # 이미지 회전
+    width_shift_range=0.2,      # 좌우 이동
+    height_shift_range=0.2,     # 상하 이동
+    shear_range=0.2,            # 기울기
+    zoom_range=0.2,             # 확대/축소
+    horizontal_flip=True,       # 좌우 반전
+    fill_mode='nearest'         # 채워질 영역
+)
 
-# 데이터를 파일로부터 로드하는 함수 정의
-def load_images_from_directory(directory):
-    images = []
-    labels = []
-    class_names = os.listdir(directory)
-    for label, class_name in enumerate(class_names):
-        class_dir = os.path.join(directory, class_name)
-        for filename in os.listdir(class_dir):
-            img_path = os.path.join(class_dir, filename)
-            img = load_img(img_path, target_size=(size, size))
-            img_array = img_to_array(img) / 255.0
-            images.append(img_array)
-            labels.append(label)
-    return np.array(images), np.array(labels)
+test_datagen = ImageDataGenerator(rescale=1./255)  # 정규화만
 
 # 데이터 로드
-X, y = load_images_from_directory(train_dir)
+train_generator = train_datagen.flow_from_directory(
+    train_dir,
+    target_size=(size, size),  # 이미지 크기 조정
+    batch_size=32,
+    class_mode='binary'        # 이진 분류로 설정
+)
 
-# K-fold 설정
-kfold = KFold(n_splits=3, shuffle=True, random_state=42)
-
-fold_no = 1
-for train_idx, val_idx in kfold.split(X, y):
-    print(f"Training fold {fold_no}...")
-
-    # 훈련 데이터 및 검증 데이터 분리
-    X_train, X_val = X[train_idx], X[val_idx]
-    y_train, y_val = y[train_idx], y[val_idx]
-
-    # 모델 정의
-    # model = models.Sequential([
-    #     layers.Input(shape=(size, size, 3)),  # 이미지 크기에 맞는 입력층
-    #     layers.Conv2D(32, (3, 3), activation='relu'),
-    #     layers.MaxPooling2D((2, 2)),
-    #     layers.Conv2D(64, (3, 3), activation='relu'),
-    #     layers.MaxPooling2D((2, 2)),
-    #     layers.Flatten(),
-    #     layers.Dense(128, activation='relu'),
-    #     layers.Dense(1, activation='sigmoid')  # 이진 분류를 위한 출력층
-    # ])
-
-    model = tf.keras.Sequential([
-    tf.keras.layers.Conv2D(32, (3,3), padding="same", activation="relu", input_shape=(size, size, 3)),
-    # tf.keras.layers.Input(shape=(size, size, 3)),  # 이미지 크기에 맞는 입력층 (128x128x3)
-    tf.keras.layers.Flatten(),  # 3D 이미지를 1D 벡터로 변환
-    tf.keras.layers.Dense(64, activation="relu"),
-    tf.keras.layers.Dense(128, activation="relu"),
-
-
-    tf.keras.layers.Dense(1, activation="sigmoid"),  # 이진 분류를 위한 출력층
-])
-
-    # 모델 컴파일
-    model.compile(optimizer='adam',
-                  loss='binary_crossentropy',
-                  metrics=['accuracy'])
-
-    # 모델 학습
-    model.fit(X_train, y_train, epochs=10, validation_data=(X_val, y_val), batch_size=32)
-
-    # 검증 데이터로 평가
-    val_loss, val_acc = model.evaluate(X_val, y_val)
-    print(f"Fold {fold_no} Validation Accuracy: {val_acc:.4f}")
-
-    fold_no += 1
-
-
-model.summary()
-
-
-# 전체 테스트 데이터로 모델 평가 (선택 사항)
-test_dir = './teukgang/Drug Addicted or Not People - DANP/test'
-test_datagen = ImageDataGenerator(rescale=1./255)
 test_generator = test_datagen.flow_from_directory(
     test_dir,
     target_size=(size, size),
@@ -95,20 +46,46 @@ test_generator = test_datagen.flow_from_directory(
     class_mode='binary'
 )
 
+# VGG16 모델을 사용한 전이 학습
+base_model = VGG16(weights='imagenet', include_top=False, input_shape=(size, size, 3))
+
+# 특성 추출을 위한 기본 모델
+for layer in base_model.layers:
+    layer.trainable = False
+
+# 모델 정의
+model = tf.keras.Sequential([
+    base_model,
+    GlobalAveragePooling2D(),
+
+    tf.keras.layers.Dense(512, activation='relu'),
+    tf.keras.layers.Dropout(0.5),
+    tf.keras.layers.Dense(30, activation='relu'),
+    tf.keras.layers.Dropout(0.5),
+    tf.keras.layers.Dense(1, activation='sigmoid')
+
+])
+
+# 모델 컴파일
+model.compile(optimizer='adam',
+              loss='binary_crossentropy',
+              metrics=['accuracy'])
+
+# 조기 종료 및 학습률 감소 설정
+early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5)
+
+# 모델 학습
+model.fit(
+    train_generator,
+    epochs=30,
+    validation_data=test_generator,
+    callbacks=[early_stopping, reduce_lr]
+)
+
+# 테스트 데이터로 평가
 test_loss, test_acc = model.evaluate(test_generator)
-print(f"전체 테스트 정확도: {test_acc:.4f}")
+print(f"테스트 정확도: {test_acc:.4f}")
 
 # 모델 저장 (선택 사항)
-model.save('image_classification_model.h5')
-
-# 예측 함수 정의 (임의의 이미지에 대해 중독 확률 예측)
-def predict_image(image_path):
-    img = load_img(image_path, target_size=(size, size))  # 이미지 크기 조정
-    img_array = img_to_array(img) / 255.0  # 정규화
-    img_array = tf.expand_dims(img_array, axis=0)  # 배치 차원 추가
-    prediction = model.predict(img_array)
-    print(f"이미지 '{image_path}'의 중독 확률: {prediction[0][0]:.4f}")
-
-# 예제 이미지 예측
-predict_image('./teukgang/Drug Addicted or Not People - DANP/test/Not Addicted/1.png')
-predict_image('./teukgang/Drug Addicted or Not People - DANP/test/Addicted/1.png')
+model.save('1.keras')
