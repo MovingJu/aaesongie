@@ -19,14 +19,7 @@ size = 64
 
 # 데이터 전처리 및 증강
 train_datagen = ImageDataGenerator(
-    rescale=1./255,              # 이미지를 0~1 사이로 정규화
-    rotation_range=30,          # 이미지 회전
-    width_shift_range=0.2,      # 좌우 이동
-    height_shift_range=0.2,     # 상하 이동
-    shear_range=0.2,            # 기울기
-    zoom_range=0.2,             # 확대/축소
-    horizontal_flip=True,       # 좌우 반전
-    fill_mode='nearest'         # 채워질 영역
+    rescale=1./255,
 )
 
 test_datagen = ImageDataGenerator(rescale=1./255)  # 정규화만
@@ -46,19 +39,25 @@ test_generator = test_datagen.flow_from_directory(
     class_mode='binary'
 )
 
+# VGG16 모델을 사용한 전이 학습
+base_model = VGG16(weights='imagenet', include_top=False, input_shape=(size, size, 3))
 
+# 특성 추출을 위한 기본 모델
+for layer in base_model.layers:
+    layer.trainable = False
 
-# 모델 정의
 # 모델 정의
 model = tf.keras.Sequential([
+    base_model,
+    GlobalAveragePooling2D(),
 
-    tf.keras.layers.Rescaling(1./255, input_shape=(size, size, 3)),  # 이미지 정규화
-    tf.keras.layers.Flatten(input_shape=(size, size, 3)),  # 이미지 데이터를 1D 벡터로 변환
+    tf.keras.layers.Dense(512, activation='relu'),
 
+    tf.keras.layers.Dense(256, activation='relu'),
+    
+    tf.keras.layers.Dense(128, activation='relu'),
 
-    tf.keras.layers.Dense(512, activation='relu'),  # 첫 번째 Dense Layer
-    tf.keras.layers.Dense(30, activation='relu'),   # 두 번째 Dense Layer (적당한 유닛 수 선택)
-    tf.keras.layers.Dense(1, activation='sigmoid')  # 이진 분류를 위한 출력 Layer
+    tf.keras.layers.Dense(1, activation='sigmoid')
 
 ])
 
@@ -68,16 +67,11 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 
-# 조기 종료 및 학습률 감소 설정
-# early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
-# reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5)
-
 # 모델 학습
 model.fit(
     train_generator,
-    epochs=100,
+    epochs=30,
     validation_data=test_generator,
-    # callbacks=[early_stopping, reduce_lr]
 )
 
 # 테스트 데이터로 평가

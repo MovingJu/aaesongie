@@ -10,8 +10,8 @@ from tensorflow.keras.layers import GlobalAveragePooling2D
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 
 # 데이터 경로 설정
-train_dir = './teukgang/danp/train'
-test_dir = './teukgang/danp/test'
+train_dir = './teukgang/Drug Addicted or Not People - DANP/train'
+test_dir = './teukgang/Drug Addicted or Not People - DANP/test'
 
 
 size = 64
@@ -19,14 +19,7 @@ size = 64
 
 # 데이터 전처리 및 증강
 train_datagen = ImageDataGenerator(
-    rescale=1./255,              # 정규화
-    rotation_range=30,          # 이미지 회전
-    width_shift_range=0.2,      # 좌우 이동
-    height_shift_range=0.2,     # 상하 이동
-    shear_range=0.2,            # 기울기
-    zoom_range=0.2,             # 확대/축소
-    horizontal_flip=True,       # 좌우 반전
-    fill_mode='nearest'         # 채워질 영역
+    rescale=1./255
 )
 
 test_datagen = ImageDataGenerator(rescale=1./255)  # 정규화만
@@ -58,10 +51,11 @@ model = tf.keras.Sequential([
     base_model,
     GlobalAveragePooling2D(),
 
-    tf.keras.layers.Dense(512, activation='relu'),
+    tf.keras.layers.Dense(30, activation='relu'),
     tf.keras.layers.Dropout(0.5),
     tf.keras.layers.Dense(30, activation='relu'),
     tf.keras.layers.Dropout(0.5),
+
     tf.keras.layers.Dense(1, activation='sigmoid')
 
 ])
@@ -78,7 +72,7 @@ reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=5)
 # 모델 학습
 model.fit(
     train_generator,
-    epochs=30,
+    epochs=10,
     validation_data=test_generator,
     callbacks=[early_stopping, reduce_lr]
 )

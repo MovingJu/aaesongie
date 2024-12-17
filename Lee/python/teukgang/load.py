@@ -1,14 +1,15 @@
 import tensorflow as tf
-from tensorflow.keras.preprocessing.image import load_img, img_to_array
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing.image import load_img, img_to_array, ImageDataGenerator
 
 # 데이터 경로 설정
 train_dir = './teukgang/Drug Addicted or Not People - DANP/train'
 test_dir = './teukgang/Drug Addicted or Not People - DANP/test'
 
+size = 64
+
 def predict_image(image_path):
     # 이미지 로드 및 전처리
-    img = load_img(image_path, target_size=(64, 64))  # 이미지 크기 조정
+    img = load_img(image_path, target_size=(size, size))  # 이미지 크기 조정
     img_array = img_to_array(img) / 255.0  # 정규화
     img_array = tf.expand_dims(img_array, axis=0)  # 배치 차원 추가
     
@@ -32,7 +33,7 @@ test_datagen = ImageDataGenerator(rescale=1./255)  # 정규화만
 # 테스트 데이터 로드
 test_generator = test_datagen.flow_from_directory(
     test_dir,
-    target_size=(64, 64),  # 모델의 입력 크기에 맞게 설정
+    target_size=(size, size),  # 모델의 입력 크기에 맞게 설정
     batch_size=32,
     class_mode='binary',  # 이진 분류로 설정
     shuffle=False  # 평가 시 순서가 중요하므로 shuffle=False로 설정
@@ -54,14 +55,14 @@ final_score = round((test_acc * (1 - addicted_prob) * 100), 4)
 print(f"Your score: {final_score}")
 
 # 추가적으로 여러 이미지에 대한 예측을 수행하는 코드:
-for i in range(1, 41):  # 예시: 1번부터 40번까지
-    image_path_not_addicted = f'./teukgang/Drug Addicted or Not People - DANP/test/Not Addicted/{i}.png'
-    image_path_addicted = f'./teukgang/Drug Addicted or Not People - DANP/test/Addicted/{i}.png'
+# for i in range(1, 41):  # 예시: 1번부터 40번까지
+#     image_path_not_addicted = f'./teukgang/Drug Addicted or Not People - DANP/test/Not Addicted/{i}.png'
+#     image_path_addicted = f'./teukgang/Drug Addicted or Not People - DANP/test/Addicted/{i}.png'
 
-    # 중독되지 않은 이미지 예측
-    not_addicted_prob, result = predict_image(image_path_not_addicted)
-    print(f"이미지 '{image_path_not_addicted}'의 중독 확률: {not_addicted_prob} ({result})")
+#     # 중독되지 않은 이미지 예측
+#     not_addicted_prob, result = predict_image(image_path_not_addicted)
+#     print(f"이미지 '{image_path_not_addicted}'의 중독 확률: {not_addicted_prob} ({result})")
 
-    # 중독된 이미지 예측
-    addicted_prob, result = predict_image(image_path_addicted)
-    print(f"이미지 '{image_path_addicted}'의 중독 확률: {addicted_prob} ({result})")
+#     # 중독된 이미지 예측
+#     addicted_prob, result = predict_image(image_path_addicted)
+#     print(f"이미지 '{image_path_addicted}'의 중독 확률: {addicted_prob} ({result})")

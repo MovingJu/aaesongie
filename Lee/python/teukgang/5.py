@@ -8,7 +8,7 @@ from tensorflow.keras.layers import GlobalAveragePooling2D, BatchNormalization, 
 from sklearn.model_selection import KFold  # KFold 임포트
 
 # 설정
-size = 64  # 입력 이미지 크기를 유지
+size = 64
 
 # 데이터 경로 설정
 train_dir = './teukgang/danp/train'
@@ -45,33 +45,43 @@ train_datagen = ImageDataGenerator(
 
 test_datagen = ImageDataGenerator(rescale=1./255)  # 정규화만
 
-# VGG16 모델을 사용한 전이 학습
-base_model = VGG16(weights='imagenet', include_top=False, input_shape=(size, size, 3))
-
-# 특성 추출을 위한 기본 모델
-for layer in base_model.layers:
-    layer.trainable = False
 
 # 모델 정의 함수 (개선된 모델)
 def create_model():
-    model = tf.keras.Sequential([
-        base_model,
-        BatchNormalization(),
-        Conv2D(64, (3, 3), activation='relu', padding='same'),
-        MaxPooling2D(pool_size=(2, 2), padding='valid'),  # 여기에 풀링을 둔 위치 수정
-        Conv2D(128, (3, 3), activation='relu', padding='same'),
-        GlobalAveragePooling2D(),
+    model = models.Sequential([
+        # 첫 번째 합성곱 + 풀링 레이어
+        layers.Conv2D(64, (3, 3), activation='relu', input_shape=(128, 128, 3), padding='same'),
+        layers.MaxPooling2D(pool_size=(2, 2), padding='valid'),
+
+        # 두 번째 합성곱 + 풀링 레이어
+        layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
+        layers.MaxPooling2D(pool_size=(2, 2), padding='valid'),
+
+        # 세 번째 합성곱 + 풀링 레이어
+        layers.Conv2D(256, (3, 3), activation='relu', padding='same'),
+        layers.MaxPooling2D(pool_size=(2, 2), padding='valid'),
+
+        # 네 번째 합성곱 + 풀링 레이어
+        layers.Conv2D(512, (3, 3), activation='relu', padding='same'),
+        layers.MaxPooling2D(pool_size=(2, 2), padding='valid'),
+
+        # 특성 맵을 1D 벡터로 변환
         layers.Flatten(),
-        layers.Dense(512, activation='relu'),
-        Dropout(0.5),
+
+        # 전결합(Dense) 레이어
+        layers.Dense(4096, activation='relu'),
+        layers.Dropout(0.5),  # 과적합 방지
+
+        # 출력 레이어 (이진 분류 예시)
         layers.Dense(1, activation='sigmoid')
     ])
-    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4), 
-                  loss='binary_crossentropy', metrics=['accuracy'])
+
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
     return model
 
 # K-fold 설정
-kf = KFold(n_splits=5, shuffle=True, random_state=42)
+kf = KFold(n_splits=2, shuffle=True, random_state=42)
 
 # K-fold 학습
 for fold, (train_idx, val_idx) in enumerate(kf.split(image_files), 1):

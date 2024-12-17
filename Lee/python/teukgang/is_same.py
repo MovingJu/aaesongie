@@ -24,7 +24,7 @@ def compare_images(image_path1, image_path2):
 
 # 이미지 비교 및 중복 파일 삭제
 a = 40  # 테스트 이미지 개수
-b = 154  # 학습 이미지 개수
+b = 164  # 학습 이미지 개수
 
 for i in range(1, a + 1):
     for j in range(1, b + 1):
