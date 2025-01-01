@@ -23,13 +23,13 @@ def compare_images(image_path1, image_path2):
         return False  # 이미지가 다름
 
 # 이미지 비교 및 중복 파일 삭제
-a = 40  # 테스트 이미지 개수
-b = 164  # 학습 이미지 개수
+a = 194  # 테스트 이미지 개수
+b = 194  # 학습 이미지 개수
 
 for i in range(1, a + 1):
     for j in range(1, b + 1):
-        image_path1 = f'/home/galesky/Documents/GitHub/aaesongie/Lee/python/teukgang/Drug Addicted or Not People - DANP/test/Not Addicted/{i}.png'
-        image_path2 = f'/home/galesky/Documents/GitHub/aaesongie/Lee/python/teukgang/Drug Addicted or Not People - DANP/train/Not Addicted/{j}.png'
+        image_path1 = f'/home/galesky/Documents/GitHub/aaesongie/Lee/python/teukgang/img_danp/train/Not Addicted/{i}.png'
+        image_path2 = f'/home/galesky/Documents/GitHub/aaesongie/Lee/python/teukgang/img_danp/train/Not Addicted/{j}.png'
 
         try:
             result = compare_images(image_path1, image_path2)
