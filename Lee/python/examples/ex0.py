@@ -11,6 +11,7 @@ def ex(a, b):
 
 print(ex(1, 2))
 
+
 @memory_profiler
 def ex1():
     data = [i for i in range(10**6)]
