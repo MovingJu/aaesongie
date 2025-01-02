@@ -12,10 +12,11 @@ result of original function.
 
 ### Usage example:
 ```python
-@stopwatch
-def sec_timer():
-    for i in range(1, 2, 1):
-        time.sleep(1)
+@memory_profiler
+def ex():
+    data = [i for i in range(10**5)]
+    return sum(data)
+ex()
 ```
 ### Note:
 Use it in a decorator syntax.
@@ -31,3 +32,12 @@ Use it in a decorator syntax.
         return func(*args, **kwargs)
     
     return wrapper
+
+
+if __name__ == '__main__':
+    @memory_profiler
+    def ex():
+        data = [i for i in range(10**5)]
+        return sum(data)
+    
+    ex()

@@ -15,9 +15,10 @@ result of original function.
 ### Usage example:
 ```python
 @stopwatch
-def sec_timer():
+def ex():
     for i in range(1, 2, 1):
         time.sleep(1)
+ex()
 ```
 ### Note:
 Use it in a decorator syntax.
