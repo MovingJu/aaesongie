@@ -20,16 +20,6 @@ class BankAccount(object):
     def get_balance(self):
         return self.__balance
     
-
-class Somehacker(BankAccount):
-    def __init__(self, balance):
-        super().__init__(balance)
-
-    def hack(self):
-        self.__balance += 99999
-
-    def get_balance(self):
-        return super().get_balance()
     
 if __name__ == "__main__":
     p1 = BankAccount(50000)
@@ -37,6 +27,3 @@ if __name__ == "__main__":
     # p1.deposit(-500)
     p1.withdraw(5050)
     print(p1.get_balance())
-
-    p1 = Somehacker(p1.get_balance())
-    p1.hack()

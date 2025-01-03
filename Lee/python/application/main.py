@@ -1,95 +1,55 @@
+#!/home/galesky/Documents/GitHub/aaesongie/Lee/python/application/kivy_venv/bin/python3.10
+
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
+from kivy.uix.popup import Popup
 from kivy.uix.label import Label
-import sqlite3
 
+import db_tools
 
-class ExpenseTracker(BoxLayout):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.orientation = 'vertical'
+import widgets
 
-        # 입력 필드
-        self.date_input = TextInput(hint_text="Enter Date (YYYY-MM-DD)", multiline=False)
-        self.category_input = TextInput(hint_text="Enter Category (e.g., Food, Rent)", multiline=False)
-        self.amount_input = TextInput(hint_text="Enter Amount", multiline=False, input_filter='float')
-        self.note_input = TextInput(hint_text="Enter Note (Optional)", multiline=False)
+# Kivy 앱 UI 구성
+class Every_bank(App, widgets.Widgets, db_tools.Transaction, widgets.transaction_list):
 
-        self.add_widget(self.date_input)
-        self.add_widget(self.category_input)
-        self.add_widget(self.amount_input)
-        self.add_widget(self.note_input)
-
-        # 버튼
-        self.add_button = Button(text="Add Expense", on_press=self.add_expense)
-        self.view_button = Button(text="View Records", on_press=self.view_records)
-
-        self.add_widget(self.add_button)
-        self.add_widget(self.view_button)
-
-        # 결과 표시
-        self.result_label = Label(text="")
-        self.add_widget(self.result_label)
-
-        # DB 초기화
-        self.init_db()
-
-    def init_db(self):
-        self.conn = sqlite3.connect("expenses.db")
-        self.cursor = self.conn.cursor()
-        self.cursor.execute("""
-            CREATE TABLE IF NOT EXISTS transactions (
-                id INTEGER PRIMARY KEY,
-                date TEXT,
-                category TEXT,
-                amount REAL,
-                note TEXT
-            )
-        """)
-        self.conn.commit()
-
-    def add_expense(self, instance):
-        # 데이터 추가
-        date = self.date_input.text
-        category = self.category_input.text
-        amount = self.amount_input.text
-        note = self.note_input.text
-
-        if not date or not category or not amount:
-            self.result_label.text = "Please fill all required fields."
-            return
-
-        try:
-            self.cursor.execute("INSERT INTO transactions (date, category, amount, note) VALUES (?, ?, ?, ?)",
-                                (date, category, float(amount), note))
-            self.conn.commit()
-            self.result_label.text = "Expense added successfully!"
-            self.clear_inputs()
-        except Exception as e:
-            self.result_label.text = f"Error: {e}"
-
-    def view_records(self, instance):
-        # 데이터 보기
-        self.cursor.execute("SELECT * FROM transactions")
-        records = self.cursor.fetchall()
-        if records:
-            self.result_label.text = "\n".join([f"{r[1]} - {r[2]}: ${r[3]} ({r[4]})" for r in records])
-        else:
-            self.result_label.text = "No records found."
-
-    def clear_inputs(self):
-        self.date_input.text = ""
-        self.category_input.text = ""
-        self.amount_input.text = ""
-        self.note_input.text = ""
-
-
-class ExpenseTrackerApp(App):
     def build(self):
-        return ExpenseTracker()
+        self.title = 'Every_bank'
+        self.layout = BoxLayout(orientation='vertical', padding=20, spacing=20)
+
+        # 돈 입력 필드
+        self.amount_input = TextInput(hint_text="Enter amount", multiline=False, input_filter='float', font_size=32, height=50)
+        self.layout.add_widget(self.amount_input)
+
+        # 노트 입력 필드
+        self.note_input = TextInput(hint_text="Enter note", multiline=True, font_size=32, height=100)
+        self.layout.add_widget(self.note_input)
+
+        # 거래 추가 버튼
+        add_button = Button(text="Add Transaction", on_press=self.add_transaction, font_size=32, size_hint=(None, None), size=(400, 80))
+        self.layout.add_widget(add_button)
+
+        # 거래 목록 보기 버튼
+        view_button = Button(text="View Transactions", on_press=self.view_transactions, font_size=32, size_hint=(None, None), size=(400, 80))
+        self.layout.add_widget(view_button)
+
+        # 좌측 상단에 위젯 버튼
+        widget_button = Button(text="Widgets", size_hint=(None, None), size=(200, 100), on_press=self.show_widgets, font_size=32)
+        self.layout.add_widget(widget_button)
+
+        # 위젯 팝업
+        self.popup_content = GridLayout(cols=1, padding=10, spacing=10)
+        self.popup = Popup(title="Widgets", content=self.popup_content, size_hint=(None, None), size=(800, 800))
+
+        return self.layout
 
 
-if __name__ == "__main__":
-    ExpenseTrackerApp().run()
+    def show_popup(self, title, message):
+        popup = Popup(title=title, content=Label(text=message, font_size=24), size_hint=(None, None), size=(600, 300))
+        popup.open()
+
+if __name__ == '__main__':
+    db_tools.init_db()
+    Every_bank().run()
