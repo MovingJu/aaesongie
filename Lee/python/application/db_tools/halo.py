@@ -1,2 +1,0 @@
-def halo():
-    print('halo')
