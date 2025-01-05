@@ -1,1 +1,58 @@
-{"taxes": {"amount": "1234567543213456", "timestamp": "2025-01-05 16:11:59"}, "hamburger": {"amount": "1234567543213456", "timestamp": "2025-02-05 16:11:59"}, "groceries": {"amount": "9876543210", "timestamp": "2025-01-06 10:15:23"}, "rent": {"amount": "50000000", "timestamp": "2025-01-07 12:00:00"}, "salary": {"amount": "150000000", "timestamp": "2025-01-08 09:30:45"}, "utilities": {"amount": "3500000", "timestamp": "2025-01-09 14:20:10"}, "travel": {"amount": "23000000", "timestamp": "2025-02-01 16:00:00"}, "entertainment": {"amount": "5000000", "timestamp": "2025-02-02 18:25:30"}, "shopping": {"amount": "15000000", "timestamp": "2025-02-03 17:10:05"}, "food": {"amount": "12312", "timestamp": "2025-01-05 17:23:17"}, "\ubc31\ub9cc\uc6d0\uc500\u3137\u3137": {"amount": "100000", "timestamp": "2025-01-05 18:03:16"}, "\uc65c\uc9c0\uc6cc\uc84c\ub2e4\uc548\ub410\ub2e4\ud558\uc9c0": {"amount": "1000000", "timestamp": "2025-01-05 18:12:44"}, "\uc608\uc2dc": {"amount": "123", "timestamp": "2025-01-05 18:21:28"}, "\uaecc\uc0ac\uba39\uc74c": {"amount": "-500", "timestamp": "2025-01-05 18:22:24"}}
+{
+    "taxes": {
+        "amount": "1234567543213456",
+        "timestamp": "2025-01-05 16:11:59"
+    },
+    "groceries": {
+        "amount": "9876543210",
+        "timestamp": "2025-01-06 10:15:23"
+    },
+    "rent": {
+        "amount": "50000000",
+        "timestamp": "2025-01-07 12:00:00"
+    },
+    "salary": {
+        "amount": "150000000",
+        "timestamp": "2025-01-08 09:30:45"
+    },
+    "utilities": {
+        "amount": "3500000",
+        "timestamp": "2025-01-09 14:20:10"
+    },
+    "travel": {
+        "amount": "23000000",
+        "timestamp": "2025-02-01 16:00:00"
+    },
+    "entertainment": {
+        "amount": "5000000",
+        "timestamp": "2025-02-02 18:25:30"
+    },
+    "shopping": {
+        "amount": "15000000",
+        "timestamp": "2025-02-03 17:10:05"
+    },
+    "food": {
+        "amount": "12312",
+        "timestamp": "2025-01-05 17:23:17"
+    },
+    "\ubc31\ub9cc\uc6d0\uc500\u3137\u3137": {
+        "amount": "100000",
+        "timestamp": "2025-01-05 18:03:16"
+    },
+    "\uc65c\uc9c0\uc6cc\uc84c\ub2e4\uc548\ub410\ub2e4\ud558\uc9c0": {
+        "amount": "1000000",
+        "timestamp": "2025-01-05 18:12:44"
+    },
+    "\uc608\uc2dc": {
+        "amount": "123",
+        "timestamp": "2025-01-05 18:21:28"
+    },
+    "\uaecc\uc0ac\uba39\uc74c": {
+        "amount": "-500",
+        "timestamp": "2025-01-05 18:22:24"
+    },
+    "\uc5f0\uc2b5??\uc911": {
+        "amount": "321123",
+        "timestamp": "2025-01-06 00:10:20"
+    }
+}
