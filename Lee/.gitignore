@@ -1,3 +1,6 @@
+
+python/application/bin
 python/venv
 python/application/kivy_venv
 python/application/.buildozer
+.gitignore
