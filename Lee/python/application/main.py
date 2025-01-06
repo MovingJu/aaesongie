@@ -2,9 +2,9 @@
 
 from kivy.config import Config
 
-Config.set('graphics', 'width', '800')
-Config.set('graphics', 'height', '1500')
-Config.set('graphics', 'resizable', True)
+# Config.set('graphics', 'width', '800')
+# Config.set('graphics', 'height', '1500')
+# Config.set('graphics', 'resizable', True)
 
 
 from kivy.lang import Builder
@@ -44,7 +44,7 @@ class Every_Bank_setting(BoxLayout):
         background = Image(source='khu.png', allow_stretch=True, keep_ratio=False)
         self.add_widget(background)
 
-        # Input Layout (with custom styling)
+        # # Input Layout (with custom styling)
         input_layout = main_screen.InputLayout()
         self.add_widget(input_layout)
 
