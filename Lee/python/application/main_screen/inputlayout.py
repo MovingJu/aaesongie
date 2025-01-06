@@ -33,7 +33,7 @@ class InputLayout(BoxLayout):
         # Note 입력 필드 (초기화는 하지만 숨김 상태)
         self.note_input = TextInput(
             hint_text="Enter Note (e.g., Coffee, Rent)",
-            # font_name='NanumGothicBold.ttf',
+            font_name='NanumGothicBold.ttf',
             multiline=False,
             background_color=(1, 1, 1, 1),
             foreground_color=(0, 0, 0, 1),

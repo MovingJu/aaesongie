@@ -13,6 +13,7 @@ def remove_data(file_path, note):
             # JSON 파일에 다시 저장
             with open(file_path, 'w') as file:
                 json.dump(data, file, indent=4)
+        print('removed!')
         
     except Exception as e:
         print(f"Error while deleting transaction: {e}")

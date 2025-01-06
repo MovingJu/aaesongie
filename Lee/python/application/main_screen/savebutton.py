@@ -1,10 +1,10 @@
 from kivy.uix.button import Button
 
-import json_tools
+import data_json
 
 class SaveButton(Button):
 
-    save_data = json_tools.save_data
+    save_data = data_json.save_data
 
     def __init__(self, store, money_input, note_input, **kwargs):
         super().__init__(**kwargs)

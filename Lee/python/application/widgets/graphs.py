@@ -52,7 +52,7 @@ class TransactionList(Popup):
                     size_hint_y=None,
                     height=50,
                     markup=True,
-                    font_size='15sp'  # 큰 글자
+                    font_size='30sp'  # 큰 글자
                 )
                 scroll_layout.add_widget(date_label)
 
@@ -65,7 +65,7 @@ class TransactionList(Popup):
                         text=f"{transaction['note']}",
                         size_hint_x=None,
                         width=200,
-                        font_size='12sp',  # 중간 글자
+                        font_size='24sp',  # 중간 글자
                         font_name='NanumGothicBold.ttf'
                     )
                     transaction_box.add_widget(note_label)
@@ -76,7 +76,7 @@ class TransactionList(Popup):
                         text=f"{formatted_amount} [color=#ff788e]KRW[/color]",  # 금액과 KRW
                         size_hint_x=None,
                         width=200,
-                        font_size='10sp',  # 작은 글자
+                        font_size='19sp',  # 작은 글자
                         markup=True  # 마크업 활성화
                     )
                     transaction_box.add_widget(details_label)
@@ -86,7 +86,7 @@ class TransactionList(Popup):
                         text=f"{transaction['time']}",
                         size_hint_x=None,
                         width=100,
-                        font_size='7sp',  # 작은 글자
+                        font_size='15sp',  # 작은 글자
                         color=(0.5, 0.5, 1, 1)
                     )
                     transaction_box.add_widget(time_label)
@@ -95,7 +95,6 @@ class TransactionList(Popup):
                     delete_button = Button(
                         text="Delete",
                         size_hint_x=None,
-                        font_size='8sp',
                         width=100,
                         background_color=(1, 0, 0, 1),  # 빨간색
                         on_press=lambda btn, note=transaction['note']: self.delete_transaction(note)  # note를 참조

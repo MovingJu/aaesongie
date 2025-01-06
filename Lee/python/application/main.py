@@ -1,27 +1,21 @@
 #!/home/galesky/Documents/GitHub/aaesongie/Lee/python/application/kivy_venv/bin/python3.10
 
+
 from kivy.config import Config
-
-# Config.set('graphics', 'width', '800')
-# Config.set('graphics', 'height', '1500')
-# Config.set('graphics', 'resizable', True)
-
-
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
-from kivy.storage.jsonstore import JsonStore
 from kivymd.app import MDApp
 from kivymd.uix.button import MDRaisedButton
-from kivymd.uix.textfield import MDTextField
 from kivy.graphics import Color, Rectangle
+from kivy.storage.jsonstore import JsonStore
 
-
-
+import data_json
 import main_screen
 
 
 kor_font = 'NanumGothicBold.ttf'
+
 
 # Define your UI class
 class Every_Bank_setting(BoxLayout):
@@ -30,7 +24,7 @@ class Every_Bank_setting(BoxLayout):
         self.orientation = 'vertical'
 
         # Initialize the store
-        self.store = JsonStore('data.json')
+        self.store = JsonStore('data_json/data.json')
 
         # UI setup
         self.initialize_ui()
@@ -53,12 +47,9 @@ class Every_Bank_setting(BoxLayout):
                                              input_layout.note_input)
         self.add_widget(save_button)
 
-
-
 class Every_Bank(MDApp):
     def build(self):
         return Every_Bank_setting()
-
 
 if __name__ == "__main__":
     Every_Bank().run()

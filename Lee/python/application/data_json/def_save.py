@@ -4,7 +4,7 @@ def save_data(self, instance):
     money = self.money_input.text
     note = self.note_input.text
 
-    if money and note:
+    if money or note:
         # 현재 날짜와 시간 가져오기
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
