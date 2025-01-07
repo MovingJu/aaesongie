@@ -30,6 +30,8 @@ class Every_Bank_setting(BoxLayout):
         self.initialize_ui()
 
     def initialize_ui(self):
+
+        
         # Widget Menu Button (with Material Design)
         widget_button = main_screen.WidgetButton()
         self.add_widget(widget_button)
@@ -38,13 +40,14 @@ class Every_Bank_setting(BoxLayout):
         background = Image(source='khu.png', allow_stretch=True, keep_ratio=False)
         self.add_widget(background)
 
-        # # Input Layout (with custom styling)
+        # Input Layout (with custom styling)
         input_layout = main_screen.InputLayout()
         self.add_widget(input_layout)
 
         # Save Button (with Material Design)
         save_button = main_screen.SaveButton(self.store, input_layout.money_input, 
                                              input_layout.note_input)
+
         self.add_widget(save_button)
 
 class Every_Bank(MDApp):

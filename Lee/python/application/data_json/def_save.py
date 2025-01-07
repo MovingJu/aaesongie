@@ -9,6 +9,7 @@ def save_data(self, instance):
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         # 데이터 저장
+        self.store.store_load()
         self.store.put(note, amount=money, timestamp=current_time)
         
         # 입력 필드 초기화

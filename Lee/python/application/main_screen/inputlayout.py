@@ -27,7 +27,7 @@ class InputLayout(BoxLayout):
             input_filter='int',
             input_type='number'
         )
-        self.money_input.bind(text=self.on_amount_text)  # 입력 이벤트 연결
+        self.money_input.bind(on_text_validate=self.on_amount_enter, text=self.on_amount_change)
         self.add_widget(self.money_input)
 
         # Note 입력 필드 (초기화는 하지만 숨김 상태)
@@ -44,28 +44,50 @@ class InputLayout(BoxLayout):
             opacity=0,  # 보이지 않도록 설정
             disabled=True  # 비활성화 상태로 설정
         )
-        self.add_widget(self.note_input)  # 초기에는 보이지 않지만 레이아웃에 추가
+        self.add_widget(self.note_input)
 
         # Spacer for layout alignment
-        self.add_widget(Widget(size_hint_y=None, height=dp(10)))
+        self.spacer = Widget(size_hint_y=None, height=dp(10))
+        self.add_widget(self.spacer)
 
-    def on_amount_text(self, instance, value):
+    def on_amount_enter(self, instance):
+        """Amount 입력 완료 시 호출."""
+        value = self.money_input.text.strip()
+        if value:  # Amount 입력 완료 시 Note 필드 표시 및 위치 변경
+            self.show_note_input()
+            self.swap_inputs()
+
+    def on_amount_change(self, instance, value):
         """Amount 입력 변화에 반응."""
-        if value.strip():  # Amount 입력 시 Note 필드 표시
-            if not self.note_visible:
-                self.show_note_input()
-                self.note_visible = True
-        else:  # Amount 입력이 없으면 Note 필드 숨김
+        if not value.strip():  # Amount 입력이 없으면 초기 상태로 복구
             if self.note_visible:
-                self.hide_note_input()
-                self.note_visible = False
+                self.reset_layout()
 
     def show_note_input(self):
         """Note 입력 필드를 활성화."""
         self.note_input.opacity = 1
         self.note_input.disabled = False
+        self.note_visible = True
 
     def hide_note_input(self):
         """Note 입력 필드를 비활성화."""
         self.note_input.opacity = 0
         self.note_input.disabled = True
+        self.note_visible = False
+
+    def swap_inputs(self):
+        """money_input과 note_input 위치를 교환."""
+        self.clear_widgets()  # 기존 위젯들을 제거
+        # Note 필드를 먼저 추가하여 순서를 변경
+        self.add_widget(self.note_input)
+        self.add_widget(self.money_input)
+        self.add_widget(self.spacer)
+
+    def reset_layout(self):
+        """원래 상태로 레이아웃 복구."""
+        self.clear_widgets()  # 기존 위젯들을 제거
+        # Amount 필드를 먼저 추가하여 순서를 복구
+        self.add_widget(self.money_input)
+        self.add_widget(self.note_input)
+        self.add_widget(self.spacer)
+        self.hide_note_input()  # Note 필드 숨김
