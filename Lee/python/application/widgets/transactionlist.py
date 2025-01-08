@@ -3,9 +3,17 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
-from collections import defaultdict
 
-import data_json
+import data_csv
+
+
+
+
+###### to do: delete 기능 구현해야 함.
+
+
+
+
 
 class TransactionList(Popup):
 
@@ -27,28 +35,16 @@ class TransactionList(Popup):
         scroll_layout.bind(minimum_height=scroll_layout.setter('height'))
 
         # JSON 데이터 읽기
-        data = data_json.read_data(self.file_path)
+        try: 
+            date, note, amount = data_csv.read_data(self.file_path)
 
-        # 날짜별 그룹화
-        grouped_data = defaultdict(list)
-        for note, value in data.items():
-            timestamp = value.get('timestamp', None)
-            if not timestamp:
-                continue  # timestamp가 없는 항목은 건너뜀
-            date, time = timestamp.split(" ")
-            hour, minute = time.split(":")[:2]  # 시간과 분만 추출
-            grouped_data[date].append({
-                "note": note,  # 사용자가 입력한 note를 저장
-                "amount": value.get("amount", "None"),  # amount가 없는 경우 기본값 설정
-                "time": f"{hour}:{minute}",
-            })
+            day, hnm, sec = data_csv.time_seper(date)
 
-        # 그룹화된 데이터를 레이아웃에 추가
-        if grouped_data:
-            for date, transactions in grouped_data.items():
+
+            for i in range(len(set(day))):
                 # 날짜 헤더 추가 (큰 글자)
                 date_label = Label(
-                    text=f"[b]{date}[/b]",
+                    text=f"[b]{day[i]}[/b]",
                     size_hint_y=None,
                     height=50,
                     markup=True,
@@ -57,12 +53,12 @@ class TransactionList(Popup):
                 scroll_layout.add_widget(date_label)
 
                 # 각 트랜잭션 추가
-                for transaction in transactions:
+                for i in range(len(amount)):
                     transaction_box = BoxLayout(orientation='horizontal', size_hint_y=None, height=50)
 
                     # Note (중간 크기 글자)
                     note_label = Label(
-                        text=f"{transaction['note']}",
+                        text=f"{note[i]}",
                         size_hint_x=None,
                         width=200,
                         font_size='12sp',  # 중간 글자
@@ -71,7 +67,7 @@ class TransactionList(Popup):
                     transaction_box.add_widget(note_label)
 
                     # Amount와 Time (작은 글자)
-                    formatted_amount = f"{int(transaction['amount']):,}"  # 쉼표 추가된 금액
+                    formatted_amount = f"{int(amount[i]):,}"  # 쉼표 추가된 금액
                     details_label = Label(
                         text=f"{formatted_amount} [color=#ff788e]KRW[/color]",  # 금액과 KRW
                         size_hint_x=None,
@@ -83,7 +79,7 @@ class TransactionList(Popup):
 
                     # 시간 표시
                     time_label = Label(
-                        text=f"{transaction['time']}",
+                        text=f"{hnm[i]}",
                         size_hint_x=None,
                         width=100,
                         font_size='7sp',  # 작은 글자
@@ -98,21 +94,22 @@ class TransactionList(Popup):
                         font_size='8sp',
                         width=100,
                         background_color=(1, 0, 0, 1),  # 빨간색
-                        on_press=lambda btn, note=transaction['note']: self.delete_transaction(note)  # note를 참조
+                        on_press=lambda btn, note=note[i]: self.delete_transaction(note)  # note를 참조
                     )
                     transaction_box.add_widget(delete_button)
 
                     scroll_layout.add_widget(transaction_box)
 
-        else:
+        except:
             no_data_label = Label(
-                text="No transactions found.",
+                text="No transactions found or Unable to open it.",
                 size_hint_y=None,
                 height=30,
                 font_size='16sp'
             )
             scroll_layout.add_widget(no_data_label)
 
+        
         # 스크롤 뷰에 레이아웃 추가
         scroll_view.add_widget(scroll_layout)
 
@@ -122,7 +119,7 @@ class TransactionList(Popup):
 
     def delete_transaction(self, note):
         """특정 거래 항목 삭제."""
-        data_json.remove_data(self.file_path, note)  # 항목 삭제
+        data_csv.remove_data(self.file_path, note)  # 항목 삭제
         self.refresh_popup()  # 팝업 새로 고침
 
     def refresh_popup(self):
