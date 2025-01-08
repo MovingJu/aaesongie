@@ -6,7 +6,7 @@ def save_data(self, instance):
 
     df = pd.read_csv(self.file_path)
 
-    dt = datetime.datetime.today().strftime("%Y:%m:%d/%H:%M")
+    dt = datetime.datetime.today().strftime("%Y;%m;%d/%H;%M;%T")
 
     new_row = pd.DataFrame([{'date': dt, 'note': self.note_input.text, 'amount': self.money_input.text}])
 

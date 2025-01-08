@@ -5,7 +5,7 @@ from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from collections import defaultdict
 
-import data_csv
+import data_json
 
 class TransactionList(Popup):
 
@@ -27,7 +27,7 @@ class TransactionList(Popup):
         scroll_layout.bind(minimum_height=scroll_layout.setter('height'))
 
         # JSON 데이터 읽기
-        data = data_csv.read_data(self.file_path)
+        data = data_json.read_data(self.file_path)
 
         # 날짜별 그룹화
         grouped_data = defaultdict(list)
@@ -122,7 +122,7 @@ class TransactionList(Popup):
 
     def delete_transaction(self, note):
         """특정 거래 항목 삭제."""
-        data_csv.remove_data(self.file_path, note)  # 항목 삭제
+        data_json.remove_data(self.file_path, note)  # 항목 삭제
         self.refresh_popup()  # 팝업 새로 고침
 
     def refresh_popup(self):
