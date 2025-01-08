@@ -8,9 +8,10 @@ from kivy.uix.image import Image
 from kivymd.app import MDApp
 from kivymd.uix.button import MDRaisedButton
 from kivy.graphics import Color, Rectangle
-from kivy.storage.jsonstore import JsonStore
+import pandas as pd
 
-import data_json
+
+import data_csv
 import main_screen
 
 
@@ -23,8 +24,8 @@ class Every_Bank_setting(BoxLayout):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
 
-        # Initialize the store
-        self.store = JsonStore('data_json/data.json')
+        # Initialize the file_path
+        self.file_path = 'data_csv/data.csv'
 
         # UI setup
         self.initialize_ui()
@@ -45,7 +46,7 @@ class Every_Bank_setting(BoxLayout):
         self.add_widget(input_layout)
 
         # Save Button (with Material Design)
-        save_button = main_screen.SaveButton(self.store, input_layout.money_input, 
+        save_button = main_screen.SaveButton(self.file_path, input_layout.money_input, 
                                              input_layout.note_input)
 
         self.add_widget(save_button)
