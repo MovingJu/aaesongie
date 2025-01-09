@@ -23,6 +23,5 @@ class WidgetPopup(Popup):
         return content
     
     def show_widget1(self, instance):
-        file_path = "data_csv/data.csv"
-        popup = TransactionList(file_path=file_path)
+        popup = TransactionList(file_path="data_csv/data.csv")
         popup.open()

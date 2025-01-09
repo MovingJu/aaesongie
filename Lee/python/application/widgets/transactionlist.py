@@ -12,6 +12,7 @@ import data_csv
 ###### to do: delete 기능 구현해야 함.
 
 
+####### to do: 새로 다시 만들기....? <<- 오류가 너무 많고 복잡함..
 
 
 
@@ -21,11 +22,11 @@ class TransactionList(Popup):
         super().__init__(**kwargs)
         self.title = "Transaction List"
         self.size_hint = (0.8, 0.8)
-        self.file_path = file_path  # JSON 파일 경로
+        self.file_path = file_path  # CSV 파일 경로
         self.content = self.show_transaction_list()
 
     def show_transaction_list(self):
-        """트랜잭션 목록을 표시하는 메소드."""
+        """트랜잭션 목록을 날짜별로 필터링하여 표시하는 메소드."""
         # 외부 레이아웃 설정
         layout = BoxLayout(orientation='vertical', spacing=10)
         
@@ -38,13 +39,20 @@ class TransactionList(Popup):
         try: 
             date, note, amount = data_csv.read_data(self.file_path)
 
+            print(date)
+
+            # 날짜별로 데이터를 분리
             day, hnm, sec = data_csv.time_seper(date)
 
+            unique_days = sorted(set(day))  # 날짜 목록을 정렬
+            
+            for single_day in unique_days:
+                # 해당 날짜에 대한 트랜잭션만 필터링
+                transactions_for_day = [(d, n, a, h) for d, n, a, h in zip(day, note, amount, hnm) if d == single_day]
 
-            for i in range(len(set(day))):
                 # 날짜 헤더 추가 (큰 글자)
                 date_label = Label(
-                    text=f"[b]{day[i]}[/b]",
+                    text=f"[b]{single_day}[/b]",
                     size_hint_y=None,
                     height=50,
                     markup=True,
@@ -52,13 +60,16 @@ class TransactionList(Popup):
                 )
                 scroll_layout.add_widget(date_label)
 
-                # 각 트랜잭션 추가
-                for i in range(len(amount)):
+                # 해당 날짜에 대한 트랜잭션 추가
+                for day, note_item, amount_item, time_item in transactions_for_day:
                     transaction_box = BoxLayout(orientation='horizontal', size_hint_y=None, height=50)
+                    
+
+                    print(date)
 
                     # Note (중간 크기 글자)
                     note_label = Label(
-                        text=f"{note[i]}",
+                        text=f"{note_item}",
                         size_hint_x=None,
                         width=200,
                         font_size='12sp',  # 중간 글자
@@ -66,8 +77,8 @@ class TransactionList(Popup):
                     )
                     transaction_box.add_widget(note_label)
 
-                    # Amount와 Time (작은 글자)
-                    formatted_amount = f"{int(amount[i]):,}"  # 쉼표 추가된 금액
+                    # Amount
+                    formatted_amount = f"{int(amount_item):,}"  # 쉼표 추가된 금액
                     details_label = Label(
                         text=f"{formatted_amount} [color=#ff788e]KRW[/color]",  # 금액과 KRW
                         size_hint_x=None,
@@ -79,7 +90,7 @@ class TransactionList(Popup):
 
                     # 시간 표시
                     time_label = Label(
-                        text=f"{hnm[i]}",
+                        text=f"{time_item}",
                         size_hint_x=None,
                         width=100,
                         font_size='7sp',  # 작은 글자
@@ -94,13 +105,13 @@ class TransactionList(Popup):
                         font_size='8sp',
                         width=100,
                         background_color=(1, 0, 0, 1),  # 빨간색
-                        on_press=lambda btn, note=note[i]: self.delete_transaction(note)  # note를 참조
+                        on_press=lambda btn, day=date: self.delete_transaction(day)
                     )
                     transaction_box.add_widget(delete_button)
 
                     scroll_layout.add_widget(transaction_box)
 
-        except:
+        except Exception as e:
             no_data_label = Label(
                 text="No transactions found or Unable to open it.",
                 size_hint_y=None,
@@ -117,9 +128,9 @@ class TransactionList(Popup):
         layout.add_widget(scroll_view)
         return layout
 
-    def delete_transaction(self, note):
+    def delete_transaction(self, date):
         """특정 거래 항목 삭제."""
-        data_csv.remove_data(self.file_path, note)  # 항목 삭제
+        data_csv.remove_data(self.file_path, date)  # 항목 삭제
         self.refresh_popup()  # 팝업 새로 고침
 
     def refresh_popup(self):

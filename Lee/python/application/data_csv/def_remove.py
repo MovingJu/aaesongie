@@ -1,19 +1,26 @@
-import json
+import pandas as pd
 
-def remove_data(file_path, note):
+
+def remove_data(file_path:str, date:str) -> None:
     """특정 거래 항목 삭제."""
+    
+    print(file_path, date)
+    
     try:
-        # JSON 파일 읽기
-        with open(file_path, 'r') as file:
-            data = json.load(file)
+        df = pd.read_csv(file_path)
+
+        print(df)
+
+        df = df[~(df['date'].astype(str) == str(date))] # not 연산자 주의할 것.
+
+        df.to_csv(file_path, index=False)
+
+        print(df)
         
-        # 해당 항목 삭제
-        if note in data:
-            del data[note]
-            # JSON 파일에 다시 저장
-            with open(file_path, 'w') as file:
-                json.dump(data, file, indent=4)
-        print('removed!')
         
     except Exception as e:
         print(f"Error while deleting transaction: {e}")
+
+
+# if __name__ == "__main__":
+#     remove_data('data_csv/data.csv', '2024-12-25/09:45;09:45:37')
