@@ -9,7 +9,7 @@ class InputLayout(BoxLayout):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
         self.spacing = dp(100)
-        self.padding = dp(50)
+        self.padding = dp(0)
 
         # Note 입력 필드 표시 여부
         self.note_visible = False

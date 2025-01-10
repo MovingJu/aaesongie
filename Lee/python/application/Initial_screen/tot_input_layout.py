@@ -8,8 +8,9 @@ class InputLayout(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
-        self.spacing = dp(100)
-        self.padding = dp(50)
+        # self.spacing = dp(100)
+        # self.padding = dp(50)
+
 
         # Initial Amount 입력 필드
         self.total_amount = TextInput(

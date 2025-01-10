@@ -10,7 +10,7 @@ def save_data(file_path, note_input, money_input, total_amount):
     dt = datetime.datetime.today().strftime("%Y-%m-%d/%H:%M;%S")
 
     new_row = pd.DataFrame([{'date': dt, 'note': note_input.text, 
-    'amount': money_input.text, 'total_amount':total_amount.text}])
+    'amount': money_input.text, 'total_amount':total_amount}])
 
 
     df = pd.concat([df, new_row], ignore_index=True)
