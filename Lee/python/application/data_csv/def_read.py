@@ -1,10 +1,11 @@
 import pandas as pd
 
 def read_data(file_path: str) -> tuple[list[str], list[str], list[int]]:
+    """csv파일의 열들을 리스트로 반환함."""
     
     df = pd.read_csv(file_path)
 
-    date, note, amount = [], [], []
+    date, note, amount, total_amount = [], [], [], []
 
     for i in range(len(df)):
 
@@ -26,8 +27,13 @@ def read_data(file_path: str) -> tuple[list[str], list[str], list[int]]:
         else:
             amount.append(None)
 
+        if i in df.index and (not pd.isna(df['total_amount'][i])):
+            total_amount.append(int(df['total_amount'][i]))
+        else:
+            total_amount.append(None)
 
-    return date, note, amount
 
-if __name__ == "__main__":
-    print(read_data("data_csv/data.csv"))
+    return date, note, amount, total_amount
+
+# if __name__ == "__main__":
+#     print(read_data("data_csv/data.csv"))

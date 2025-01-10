@@ -60,21 +60,25 @@ class Every_Bank(MDApp):
         # ScreenManager 생성
         sm = ScreenManager()
 
-        # Initialize x to 0
-        self.x = 0
+        
+        if data_csv.is_csv_mt('data_csv/data.csv'):
+            self.x = 0
+        else:
+            self.x = 1
+
 
         # Create the WelcomeScreen initially
         self.initial_screen = Initial_screen.InitialScreen(name="Initial")
         sm.add_widget(self.initial_screen)
 
-        # Schedule the function to check `change` after 0.5 seconds
-        Clock.schedule_interval(self.check_change_value, 0.5)
+        Clock.schedule_interval(self.check_change_value, 0)
 
         return sm
 
     def check_change_value(self, dt):
+
         # If `change` in InitialScreen is 1, switch to the MainScreen
-        if self.initial_screen.change == 1:
+        if self.initial_screen.change or self.x == 1:
             sm = self.root  # Access the ScreenManager
             sm.clear_widgets()  # Clear all current screens
             sm.add_widget(MainScreen(name="main"))  # Add MainScreen

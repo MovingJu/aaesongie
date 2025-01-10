@@ -1,20 +1,18 @@
 import pandas as pd
-import datetime
 
 
-def save_initial_data(self, instance):
+def save_initial_data(file_path, total_amount):
 
-    df = pd.read_csv(self.file_path)
+    total_amount = int(total_amount.text)
 
-    dt = datetime.datetime.today().strftime("%Y-%m-%d/%H:%M;%S")
-
-    new_row = pd.DataFrame([{'date': dt, 'note': self.note_input.text, 
-    'amount': self.money_input.text, 'total_amount':self.total_amount.text}])
-
-
-    df = pd.concat([df, new_row], ignore_index=True)
+    df = pd.DataFrame({
+        'date':[None],
+        'note':[None],
+        'amount':[None],
+        'total_amount':[total_amount]
+    })
 
 
     print(df)
 
-    df.to_csv(self.file_path, index=False)
+    df.to_csv(file_path, index=False)

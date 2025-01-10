@@ -2,7 +2,7 @@ hakseup/venv
 python/for_test/.buildozer
 python/application/bin
 python/venv
-python/application/kivy_venv
+python/application/kivymd_venv
 python/for_test/kivy_venv
 python/application/.buildozer
 .gitignore

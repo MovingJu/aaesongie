@@ -7,8 +7,6 @@ from kivy.uix.scrollview import ScrollView
 import data_csv
 
 
-
-
 ###### to do: delete 기능 구현해야 함.
 
 

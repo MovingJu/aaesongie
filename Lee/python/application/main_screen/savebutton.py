@@ -4,8 +4,6 @@ import data_csv
 
 class SaveButton(Button):
 
-    save_data = data_csv.save_data
-
     def __init__(self, file_path, money_input, note_input, **kwargs):
         super().__init__(**kwargs)
         self.text = "Save"
@@ -16,4 +14,7 @@ class SaveButton(Button):
         self.money_input = money_input
         self.note_input = note_input
 
-        self.bind(on_press=self.save_data)
+        self.bind(on_press=self.pressed)
+
+    def pressed(self, instance):
+        data_csv.save_data(self.file_path, self.note_input, self.money_input)

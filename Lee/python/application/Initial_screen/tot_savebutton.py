@@ -3,7 +3,6 @@ import data_csv
 
 class TotalSaveButton(Button):
 
-    save_data = data_csv.save_initial_data
 
     def __init__(self, file_path, total_amount, **kwargs):
         super().__init__(**kwargs)
@@ -22,7 +21,7 @@ class TotalSaveButton(Button):
 
 
         ##### 이 기능 추가해야함.
-        # self.save_data(self.file_path, self.total_amount)
+        data_csv.save_initial_data(self.file_path, self.total_amount)
         
         # Update the tot_pressed value
         self.tot_pressed = 1
