@@ -1,7 +1,7 @@
 from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout as PopupBox
 from kivy.uix.button import Button
-from .transactionlist import TransactionList
+from .reset import TransactionList
 
 class WidgetPopup(Popup):
     def __init__(self, **kwargs):

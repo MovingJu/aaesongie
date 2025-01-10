@@ -7,12 +7,6 @@ from kivy.uix.scrollview import ScrollView
 import data_csv
 
 
-###### to do: delete 기능 구현해야 함.
-
-
-####### to do: day마다 그 날에 맞는 transaction만 나오는 코드 작성, 현재는 모든 transaction이
-#######        각 day칸에 전부 포함된채로 나옴.
-
 
 
 class TransactionList(Popup):

@@ -26,5 +26,5 @@ class InputLayout(BoxLayout):
         )
         self.add_widget(self.total_amount)
 
-        self.spacer = Widget(size_hint_y=None, height=dp(10))
+        self.spacer = Widget(size_hint_y=None, height=dp(200))
         self.add_widget(self.spacer)

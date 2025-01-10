@@ -1,4 +1,4 @@
-#!/home/galesky/Documents/GitHub/aaesongie/Lee/python/application/kivy_venv/bin/python3.10
+#!/home/galesky/Documents/GitHub/aaesongie/Lee/python/application/kivymd_venv/bin/python3.10
 
 kor_font = 'NanumGothicBold.ttf'
 
@@ -32,6 +32,7 @@ class Every_Bank_setting(BoxLayout):
 
         # Initialize the file_path
         self.file_path = 'data_csv/data.csv'
+        _, _, _, self.total_amount = data_csv.read_data(self.file_path)
 
         # UI setup
         self.initialize_ui()
@@ -51,7 +52,7 @@ class Every_Bank_setting(BoxLayout):
 
         # Save Button (with Material Design)
         save_button = main_screen.SaveButton(self.file_path, input_layout.money_input, 
-                                             input_layout.note_input)
+                                             input_layout.note_input, self.total_amount)
         self.add_widget(save_button)
 
 

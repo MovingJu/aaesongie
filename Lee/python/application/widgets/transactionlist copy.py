@@ -36,7 +36,7 @@ class TransactionList(Popup):
 
         # JSON 데이터 읽기
         try: 
-            date, note, amount = data_csv.read_data(self.file_path)
+            date, note, amount, total_amount = data_csv.read_data(self.file_path)
 
             print(date)
 
@@ -46,6 +46,7 @@ class TransactionList(Popup):
             print(day, hnm, sec)
 
             date_set = sorted(set(day))  # 날짜 목록을 정렬
+
             
             for one_day in date_set:
 
@@ -61,61 +62,70 @@ class TransactionList(Popup):
 
 
                 for i in range(len(date)):
-
-                    transaction_box = BoxLayout(orientation='horizontal', size_hint_y=None, height=50)
                     
+                    if one_day == data_csv.time_seper(day[i]):
 
-                    print(date)
+                        transaction_box = BoxLayout(orientation='horizontal', size_hint_y=None, height=50)
+                        
 
-                    print(note[i], type(note[i]))
+                        print(date)
 
-                    # Note (중간 크기 글자)
-                    note_label = Label(
-                        text=f"{str(note[i])}",
-                        size_hint_x=None,
-                        width=200,
-                        font_size='12sp',  # 중간 글자
-                        font_name='NanumGothicBold.ttf'
-                    )
-                    transaction_box.add_widget(note_label)
+                        print(note[i], type(note[i]))
 
-                    # Amount
-                    print(amount[i], type(amount[i]))
+                        # Note (중간 크기 글자)
+                        note_label = Label(
+                            text=f"{str(note[i])}",
+                            size_hint_x=None,
+                            width=200,
+                            font_size='12sp',  # 중간 글자
+                            font_name='NanumGothicBold.ttf'
+                        )
+                        transaction_box.add_widget(note_label)
 
-                    formatted_amount = f"{int(amount[i]):,}"  # 쉼표 추가된 금액
-                    details_label = Label(
-                        text=f"{formatted_amount} [color=#ff788e]KRW[/color]",  # 금액과 KRW
-                        size_hint_x=None,
-                        width=200,
-                        font_size='10sp',  # 작은 글자
-                        markup=True  # 마크업 활성화
-                    )
-                    transaction_box.add_widget(details_label)
+                        formatted_amount = f"{int(amount[i]):,}"  # 쉼표 추가된 금액
+                        details_label = Label(
+                            text=f"{formatted_amount} [color=#ff788e]KRW[/color]",  # 금액과 KRW
+                            size_hint_x=None,
+                            width=200,
+                            font_size='10sp',  # 작은 글자
+                            markup=True  # 마크업 활성화
+                        )
+                        transaction_box.add_widget(details_label)
 
-                    # 시간 표시
-                    print(hnm[i], type(hnm[i]))
+                        # formatted_total_amount = f"{int(total_amount[i]):,}"
+                        # details_label = Label(
+                        #     text=f"{formatted_total_amount} [color=#ff788e]KRW[/color]",
+                        #     size_hint_x=None,
+                        #     width=200,
+                        #     font_size='10sp',  # 작은 글자
+                        #     markup=True  # 마크업 활성화
+                        # )
+                        # transaction_box.add_widget(details_label)
 
-                    time_label = Label(
-                        text=f"{str(hnm[i])}",
-                        size_hint_x=None,
-                        width=100,
-                        font_size='7sp',  # 작은 글자
-                        color=(0.5, 0.5, 1, 1)
-                    )
-                    transaction_box.add_widget(time_label)
+                        # 시간 표시
+                        print(hnm[i], type(hnm[i]))
 
-                    # Delete 버튼 추가
-                    delete_button = Button(
-                        text="Delete",
-                        size_hint_x=None,
-                        font_size='8sp',
-                        width=100,
-                        background_color=(1, 0, 0, 1),  # 빨간색
-                        on_press=lambda btn, day=date: self.delete_transaction(day)
-                    )
-                    transaction_box.add_widget(delete_button)
+                        time_label = Label(
+                            text=f"{str(hnm[i])}",
+                            size_hint_x=None,
+                            width=100,
+                            font_size='7sp',  # 작은 글자
+                            color=(0.5, 0.5, 1, 1)
+                        )
+                        transaction_box.add_widget(time_label)
 
-                    scroll_layout.add_widget(transaction_box)
+                        # Delete 버튼 추가
+                        delete_button = Button(
+                            text="Delete",
+                            size_hint_x=None,
+                            font_size='8sp',
+                            width=100,
+                            background_color=(1, 0, 0, 1),  # 빨간색
+                            on_press=lambda btn, day=date: self.delete_transaction(day)
+                        )
+                        transaction_box.add_widget(delete_button)
+
+                        scroll_layout.add_widget(transaction_box)
 
         except Exception as e:
             no_data_label = Label(
