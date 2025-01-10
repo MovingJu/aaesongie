@@ -2,7 +2,7 @@ import pandas as pd
 import datetime
 
 
-def save_data(self, instance):
+def save_initial_data(self, instance):
 
     df = pd.read_csv(self.file_path)
 

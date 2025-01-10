@@ -12,8 +12,7 @@ import data_csv
 ###### to do: delete 기능 구현해야 함.
 
 
-####### to do: day마다 그 날에 맞는 transaction만 나오는 코드 작성, 현재는 모든 transaction이
-#######        각 day칸에 전부 포함된채로 나옴.
+####### to do: 새로 다시 만들기....? <<- 오류가 너무 많고 복잡함..
 
 
 
@@ -43,17 +42,17 @@ class TransactionList(Popup):
             print(date)
 
             # 날짜별로 데이터를 분리
-            (day, hnm, sec) = data_csv.time_seper(date)
+            day, hnm, sec = data_csv.time_seper(date)
 
-            print(day, hnm, sec)
-
-            date_set = sorted(set(day))  # 날짜 목록을 정렬
+            unique_days = sorted(set(day))  # 날짜 목록을 정렬
             
-            for one_day in date_set:
+            for single_day in unique_days:
+                # 해당 날짜에 대한 트랜잭션만 필터링
+                transactions_for_day = [(d, n, a, h) for d, n, a, h in zip(day, note, amount, hnm) if d == single_day]
 
                 # 날짜 헤더 추가 (큰 글자)
                 date_label = Label(
-                    text=f"[b]{one_day}[/b]",
+                    text=f"[b]{single_day}[/b]",
                     size_hint_y=None,
                     height=50,
                     markup=True,
@@ -61,19 +60,16 @@ class TransactionList(Popup):
                 )
                 scroll_layout.add_widget(date_label)
 
-
-                for i in range(len(date)):
-
+                # 해당 날짜에 대한 트랜잭션 추가
+                for day, note_item, amount_item, time_item in transactions_for_day:
                     transaction_box = BoxLayout(orientation='horizontal', size_hint_y=None, height=50)
                     
 
                     print(date)
 
-                    print(note[i], type(note[i]))
-
                     # Note (중간 크기 글자)
                     note_label = Label(
-                        text=f"{str(note[i])}",
+                        text=f"{note_item}",
                         size_hint_x=None,
                         width=200,
                         font_size='12sp',  # 중간 글자
@@ -82,9 +78,7 @@ class TransactionList(Popup):
                     transaction_box.add_widget(note_label)
 
                     # Amount
-                    print(amount[i], type(amount[i]))
-
-                    formatted_amount = f"{int(amount[i]):,}"  # 쉼표 추가된 금액
+                    formatted_amount = f"{int(amount_item):,}"  # 쉼표 추가된 금액
                     details_label = Label(
                         text=f"{formatted_amount} [color=#ff788e]KRW[/color]",  # 금액과 KRW
                         size_hint_x=None,
@@ -95,10 +89,8 @@ class TransactionList(Popup):
                     transaction_box.add_widget(details_label)
 
                     # 시간 표시
-                    print(hnm[i], type(hnm[i]))
-
                     time_label = Label(
-                        text=f"{str(hnm[i])}",
+                        text=f"{time_item}",
                         size_hint_x=None,
                         width=100,
                         font_size='7sp',  # 작은 글자
@@ -126,9 +118,6 @@ class TransactionList(Popup):
                 height=30,
                 font_size='16sp'
             )
-
-            print("error code: " + str(e))
-
             scroll_layout.add_widget(no_data_label)
 
         
