@@ -21,7 +21,6 @@ def middle_deco(func_str: 'function', func_list: 'function') -> 'function':
 
 def str_time_seper(date: str) -> tuple[str, str, str]:
 
-    # print(date, type(date))
     
     try:
 
@@ -43,7 +42,6 @@ def li_time_seper(li:list[str]) -> list[tuple[str, str, str]]:
     
     for i in li_applyer(str_time_seper, li):
 
-        print(i)
 
         day.append(i[0])
         hnm.append(i[1])
@@ -59,6 +57,9 @@ def time_seper(date):
 
 
 if __name__ == "__main__":
+
+    from data_csv import li_applyer
+
     print(time_seper('2025-01-08/19:21;19:21:24'))
 
     print(time_seper(['2025-01-08/19:21;19:21:24', '2025-01-08/19:21;19:21:35', None, '2025-01-08/19:21;19:21:58', 

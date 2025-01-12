@@ -38,16 +38,13 @@ class TransactionList(Popup):
         try: 
             date, note, amount, total_amount = data_csv.read_data(self.file_path)
 
-            print(date)
+
 
             # 날짜별로 데이터를 분리
             (day, hnm, sec) = data_csv.time_seper(date)
 
-            print(day, hnm, sec)
-
             date_set = sorted(set(day))  # 날짜 목록을 정렬
 
-            
             for one_day in date_set:
 
                 # 날짜 헤더 추가 (큰 글자)
@@ -63,18 +60,14 @@ class TransactionList(Popup):
 
                 for i in range(len(date)):
                     
-                    if one_day == data_csv.time_seper(day[i]):
+                    if one_day == day[i]:
 
                         transaction_box = BoxLayout(orientation='horizontal', size_hint_y=None, height=50)
                         
 
-                        print(date)
-
-                        print(note[i], type(note[i]))
-
                         # Note (중간 크기 글자)
                         note_label = Label(
-                            text=f"{str(note[i])}",
+                            text=f"{note[i]}",
                             size_hint_x=None,
                             width=200,
                             font_size='12sp',  # 중간 글자
@@ -82,31 +75,33 @@ class TransactionList(Popup):
                         )
                         transaction_box.add_widget(note_label)
 
-                        formatted_amount = f"{int(amount[i]):,}"  # 쉼표 추가된 금액
+
+                        formatted_total_amount = (
+                            f"[size=12sp]{total_amount[i]}[/size]\n"  # total_amount 폰트 크기 설정
+                            f"[size=9sp]{amount[i]}[/size]"
+                        )
                         details_label = Label(
-                            text=f"{formatted_amount} [color=#ff788e]KRW[/color]",  # 금액과 KRW
+                            text=f"{formatted_total_amount}\n[color=#ff788e]KRW[/color]",
                             size_hint_x=None,
                             width=200,
-                            font_size='10sp',  # 작은 글자
+                            font_size='9sp',  # 기본 폰트 크기
                             markup=True  # 마크업 활성화
                         )
                         transaction_box.add_widget(details_label)
 
-                        # formatted_total_amount = f"{int(total_amount[i]):,}"
+
+                        # formatted_amount = f"{amount[i]}"  # 쉼표 추가된 금액
                         # details_label = Label(
-                        #     text=f"{formatted_total_amount} [color=#ff788e]KRW[/color]",
+                        #     text=f"{formatted_amount} [color=#ff788e]KRW[/color]",  # 금액과 KRW
                         #     size_hint_x=None,
                         #     width=200,
-                        #     font_size='10sp',  # 작은 글자
+                        #     font_size='8sp',  # 작은 글자
                         #     markup=True  # 마크업 활성화
                         # )
                         # transaction_box.add_widget(details_label)
 
-                        # 시간 표시
-                        print(hnm[i], type(hnm[i]))
-
                         time_label = Label(
-                            text=f"{str(hnm[i])}",
+                            text=f"{hnm[i]}",
                             size_hint_x=None,
                             width=100,
                             font_size='7sp',  # 작은 글자
@@ -121,7 +116,7 @@ class TransactionList(Popup):
                             font_size='8sp',
                             width=100,
                             background_color=(1, 0, 0, 1),  # 빨간색
-                            on_press=lambda btn, day=date: self.delete_transaction(day)
+                            on_press=lambda btn, the_day=date[i]: self.delete_transaction(the_day)
                         )
                         transaction_box.add_widget(delete_button)
 

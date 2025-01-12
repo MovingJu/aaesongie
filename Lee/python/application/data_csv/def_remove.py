@@ -9,18 +9,18 @@ def remove_data(file_path:str, date:str) -> None:
     try:
         df = pd.read_csv(file_path)
 
-        print(df)
+        # print(df)
 
         df = df[~(df['date'].astype(str) == str(date))] # not 연산자 주의할 것.
 
         df.to_csv(file_path, index=False)
 
-        print(df)
+        # print(df)
         
         
     except Exception as e:
         print(f"Error while deleting transaction: {e}")
 
 
-# if __name__ == "__main__":
-#     remove_data('data_csv/data.csv', '2024-12-25/09:45;09:45:37')
+if __name__ == "__main__":
+    remove_data('data_csv/data.csv', '2025-01-12/17:13;05')

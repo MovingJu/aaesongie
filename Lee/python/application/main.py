@@ -40,7 +40,6 @@ class Every_Bank_setting(BoxLayout):
 
         # Initialize the file_path
         self.file_path = 'data_csv/data.csv'
-        _, _, _, self.total_amount = data_csv.read_data(self.file_path)
 
         # UI setup
         self.initialize_ui(content_layout)
@@ -64,7 +63,7 @@ class Every_Bank_setting(BoxLayout):
 
         # Save Button (with Material Design)
         save_button = main_screen.SaveButton(self.file_path, input_layout.money_input, 
-                                             input_layout.note_input, self.total_amount)
+                                             input_layout.note_input)
         content_layout.add_widget(save_button)
 
         # content_layout을 현재 레이아웃에 추가

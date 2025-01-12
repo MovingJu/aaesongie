@@ -35,5 +35,5 @@ def read_data(file_path: str) -> tuple[list[str], list[str], list[int]]:
 
     return date, note, amount, total_amount
 
-# if __name__ == "__main__":
-#     print(read_data("data_csv/data.csv"))
+if __name__ == "__main__":
+    print(read_data("data_csv/data.csv"))
