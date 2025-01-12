@@ -13,7 +13,7 @@ def save_data(file_path, note_input, money_input):
 
     dt = datetime.datetime.today().strftime("%Y-%m-%d/%H:%M;%S")
 
-    total_amount = data_csv.tot_amount_calc(money_input.text)
+    total_amount, df = data_csv.tot_amount_calc(money_input.text)
 
     new_row = pd.DataFrame([{'date': dt, 'note': note_input.text, 
     'amount': money_input.text, 'total_amount':total_amount}])

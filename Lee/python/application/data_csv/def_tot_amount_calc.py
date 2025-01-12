@@ -11,14 +11,13 @@ def tot_amount_calc(input_amount):
     for i in range(len(tot_amount_li) - 1):
         df.loc[i + 1, 'total_amount'] = df.loc[i, 'total_amount'] + df.loc[i + 1, 'amount']
 
+    # df.to_csv('data_csv/data.csv', index=False)
     print(df)
-    df.to_csv('data_csv/data.csv', index=False)
 
 
     total_amount = tot_amount_li[len(tot_amount_li) - 1] + float(input_amount)
 
-    return total_amount
-
+    return total_amount, df
 
 
 

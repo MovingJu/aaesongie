@@ -113,9 +113,9 @@ class TransactionList(Popup):
                         delete_button = Button(
                             text="Delete",
                             size_hint_x=None,
-                            font_size='8sp',
-                            width=100,
-                            background_color=(1, 0, 0, 1),  # 빨간색
+                            font_size='7sp',
+                            width=50,
+                            background_color=(0.8, 0.2, 0.2, 1),  # 빨간색
                             on_press=lambda btn, the_day=date[i]: self.delete_transaction(the_day)
                         )
                         transaction_box.add_widget(delete_button)
