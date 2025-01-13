@@ -1,6 +1,6 @@
 import pandas as pd
 
-def read_data(file_path: str) -> tuple[list[str], list[str], list[int]]:
+def read_data(file_path: str) -> tuple[list[str], list[str], list[int], list[float]]:
     """csv파일의 열들을 리스트로 반환함."""
     
     df = pd.read_csv(file_path)

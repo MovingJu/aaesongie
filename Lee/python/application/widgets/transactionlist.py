@@ -104,8 +104,8 @@ class TransactionList(Popup):
 
                         scroll_layout.add_widget(transaction_box)
 
-                    spacing_widget = Widget(size_hint_y=None, height=20)  # 원하는 높이 설정
-                    scroll_layout.add_widget(spacing_widget)
+                    # spacing_widget = Widget(size_hint_y=None, height=0)  # 원하는 높이 설정
+                    # scroll_layout.add_widget(spacing_widget)
 
         except Exception as e:
             no_data_label = Label(
