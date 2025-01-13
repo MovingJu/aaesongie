@@ -3,6 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
+from kivy.uix.widget import Widget
 
 import data_csv
 
@@ -102,6 +103,9 @@ class TransactionList(Popup):
                         transaction_box.add_widget(delete_button)
 
                         scroll_layout.add_widget(transaction_box)
+
+                    spacing_widget = Widget(size_hint_y=None, height=20)  # 원하는 높이 설정
+                    scroll_layout.add_widget(spacing_widget)
 
         except Exception as e:
             no_data_label = Label(
