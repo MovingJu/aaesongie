@@ -91,3 +91,14 @@ class InputLayout(BoxLayout):
         self.add_widget(self.note_input)
         self.add_widget(self.spacer)
         self.hide_note_input()  # Note 필드 숨김
+
+    def reset_layout(self):
+        """원래 상태로 레이아웃 복구."""
+        self.money_input.text = ""  # Amount 필드 초기화
+        self.note_input.text = ""   # Note 필드 초기화
+        self.clear_widgets()        # 기존 위젯들을 제거
+        # Amount 필드를 먼저 추가하여 순서를 복구
+        self.add_widget(self.money_input)
+        self.add_widget(self.note_input)
+        self.add_widget(self.spacer)
+        self.hide_note_input()      # Note 필드 숨김

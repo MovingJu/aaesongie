@@ -6,15 +6,6 @@ from kivy.uix.scrollview import ScrollView
 
 import data_csv
 
-
-###### to do: delete 기능 구현해야 함.
-
-
-####### to do: day마다 그 날에 맞는 transaction만 나오는 코드 작성, 현재는 모든 transaction이
-#######        각 day칸에 전부 포함된채로 나옴.
-
-
-
 class TransactionList(Popup):
 
     def __init__(self, file_path, **kwargs):
@@ -90,16 +81,6 @@ class TransactionList(Popup):
                         transaction_box.add_widget(details_label)
 
 
-                        # formatted_amount = f"{amount[i]}"  # 쉼표 추가된 금액
-                        # details_label = Label(
-                        #     text=f"{formatted_amount} [color=#ff788e]KRW[/color]",  # 금액과 KRW
-                        #     size_hint_x=None,
-                        #     width=200,
-                        #     font_size='8sp',  # 작은 글자
-                        #     markup=True  # 마크업 활성화
-                        # )
-                        # transaction_box.add_widget(details_label)
-
                         time_label = Label(
                             text=f"{hnm[i]}",
                             size_hint_x=None,
@@ -145,6 +126,7 @@ class TransactionList(Popup):
     def delete_transaction(self, date):
         """특정 거래 항목 삭제."""
         data_csv.remove_data(self.file_path, date)  # 항목 삭제
+        data_csv.tot_amount_calc()
         self.refresh_popup()  # 팝업 새로 고침
 
     def refresh_popup(self):

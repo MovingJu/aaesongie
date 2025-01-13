@@ -12,3 +12,4 @@ from .def_li_applyer import li_applyer
 from .def_initial_save import save_initial_data
 from .def_is_csv_mt import is_csv_mt
 from .def_tot_amount_calc import tot_amount_calc
+from .def_tot_amount_calc import tot_amount_reter
