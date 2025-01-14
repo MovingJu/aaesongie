@@ -1,23 +1,16 @@
-import matplotlib 
-import data_csv.day_seper
-matplotlib.rcParams['font.family'] = 'Malgun gothic' # OR NanumMyeongjo
-matplotlib.rcParams['font.size'] = 15
-matplotlib.rcParams['axes.unicode_minus'] = False
-
-import matplotlib.pyplot as plt 
-from matplotlib.ticker import ScalarFormatter 
-
 import data_csv
 import graph_gen
 import graph_text_gen
 
 
 def preprocessor():
-    date, note, amount, total_amount = data_csv.read_data('data_csv/data.csv')
+    # date, note, amount, total_amount = data_csv.read_data('data_csv/data.csv')
 
-    ymd, hnm, sec = data_csv.time_seper(date)
+    ymd, amount, total_amount = data_csv.read_set_data('data_csv/data.csv')
+
 
     year, month, day = data_csv.day_seper(ymd)
+
 
     month_seted = sorted(set(month))
 

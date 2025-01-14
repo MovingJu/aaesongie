@@ -2,8 +2,12 @@ import matplotlib
 import matplotlib.pyplot as plt
 import data_csv
 import time
+from matplotlib import font_manager
 
-matplotlib.rcParams['font.family'] = 'Malgun gothic'  # OR NanumMyeongjo
+font_path = "NanumGothicBold.ttf"
+font_prop = font_manager.FontProperties(fname=font_path)
+
+matplotlib.rcParams['font.family'] = font_prop.get_name()
 matplotlib.rcParams['font.size'] = 15
 matplotlib.rcParams['axes.unicode_minus'] = False
 
