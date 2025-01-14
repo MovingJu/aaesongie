@@ -5,15 +5,11 @@ matplotlib.rcParams['font.size'] = 15
 matplotlib.rcParams['axes.unicode_minus'] = False
 
 import matplotlib.pyplot as plt 
-import data_csv
-import time
 from matplotlib.ticker import ScalarFormatter 
 
-
-
-### to do: 날짜별로 slicing해줘서 관리하기 용이하게 하는 함수 제작 필요. -> 비슷한건 이 파일 아래에 구현돼있음.
-
-
+import data_csv
+import graph_gen
+import graph_text_gen
 
 
 def monthly_gen():
@@ -27,9 +23,6 @@ def monthly_gen():
     month_seted = sorted(set(month))
 
 
-    for i in month_seted:
-        pass
-
     indexer = [0]
 
     for j in range(len(month) - 1):
@@ -38,62 +31,24 @@ def monthly_gen():
 
     indexer.append(len(day) + 2)
 
-    # print(indexer)
-
 
     for k in range(len(sorted(set(month)))):
 
-        # 그래프 크기 설정
-        plt.figure(figsize=(12, 8), facecolor='gray')  # 그래프 크기 조정
-        
-        plt.plot(day[indexer[k]:indexer[k+1]], total_amount[indexer[k]:indexer[k+1]], color='black', 
-                 marker='o', linestyle='-.')
-        
-        plt.axhline(y=total_amount[0], color='red', linestyle=':', linewidth=1, alpha=0.7)
+        xlist = day[indexer[k]:indexer[k+1]]
+        ylist = total_amount[indexer[k]:indexer[k+1]]
 
+        fig, ax = graph_gen.graph_gen(xlist, ylist, figsize=(12, 8), 
+                                      title=f'{k + 1}월 소비량',
+                                      x_rotation=20)
 
-        b_txt = -1
+        ax = graph_text_gen.graph_text_gen(xlist, ylist, ax, show_level=1)
 
-        for idx, txt in enumerate(total_amount[indexer[k]:indexer[k+1]]):
-
-            txt = round(txt/1e6, 3)
-
-            # print(b_txt, txt)
-
-            if b_txt == txt:
-                continue
-
-            # print(idx)
-
-            b_txt = txt
-
-            # print('b_txt=', b_txt)
-
-            plt.text(day[indexer[k]:indexer[k+1]][idx], total_amount[indexer[k]:indexer[k+1]][idx] + 0.4, txt, 
-                     ha='center', color='blue', rotation=20)
-
-
-
-        plt.title(f'{k+1}월 소비량')
-
-        ax = plt.gca()
-        ax.set_facecolor('gray') 
-
-
-        plt.xlabel('날짜', loc='left', color='black')
-        plt.ylabel('총액', loc='center', color='black')
-
-        plt.xticks(rotation=20, ha='center')
-
-        #x축 간격을 이틀로 설정
-        plt.xticks(range(0, len(day[indexer[k]:indexer[k+1]]), 2), day[indexer[k]:indexer[k+1]][::2])
-
-        plt.grid(color='black', alpha=0.5, linestyle='--', linewidth=1)
-
-        plt.savefig(f'visualizer/graphs/{k + 1}monthly.png', dpi=100)
+        fig.savefig(f'graphs/{k + 1}monthly.png', dpi=200)
 
 
 if __name__ == "__main__":
+    import time
+    
     st = time.time()
     monthly_gen()
     et = time.time()
