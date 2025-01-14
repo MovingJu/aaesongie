@@ -1,13 +1,13 @@
-import matplotlib
+import matplotlib 
 import data_csv.day_seper
-matplotlib.rcParams['font.family'] = 'NanumMyeongjo'
+matplotlib.rcParams['font.family'] = 'Malgun gothic' # OR NanumMyeongjo
 matplotlib.rcParams['font.size'] = 15
 matplotlib.rcParams['axes.unicode_minus'] = False
 
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt 
 import data_csv
 import time
-from matplotlib.ticker import ScalarFormatter
+from matplotlib.ticker import ScalarFormatter 
 
 
 
@@ -38,7 +38,7 @@ def monthly_gen():
 
     indexer.append(len(day) + 2)
 
-    print(indexer)
+    # print(indexer)
 
 
     for k in range(len(sorted(set(month)))):
@@ -48,10 +48,26 @@ def monthly_gen():
         
         plt.plot(day[indexer[k]:indexer[k+1]], total_amount[indexer[k]:indexer[k+1]], color='black', 
                  marker='o', linestyle='-.')
+        
+        plt.axhline(y=total_amount[0], color='red', linestyle=':', linewidth=1, alpha=0.7)
 
+
+        b_txt = -1
 
         for idx, txt in enumerate(total_amount[indexer[k]:indexer[k+1]]):
-            txt = round(total_amount[indexer[k]:indexer[k+1]][idx]/1e6, 3)
+
+            txt = round(txt/1e6, 3)
+
+            # print(b_txt, txt)
+
+            if b_txt == txt:
+                continue
+
+            # print(idx)
+
+            b_txt = txt
+
+            # print('b_txt=', b_txt)
 
             plt.text(day[indexer[k]:indexer[k+1]][idx], total_amount[indexer[k]:indexer[k+1]][idx] + 0.4, txt, 
                      ha='center', color='blue', rotation=20)
@@ -74,7 +90,7 @@ def monthly_gen():
 
         plt.grid(color='black', alpha=0.5, linestyle='--', linewidth=1)
 
-        plt.savefig(f'{k + 1}monthly.png', dpi=150)
+        plt.savefig(f'visualizer/graphs/{k + 1}monthly.png', dpi=100)
 
 
 if __name__ == "__main__":
