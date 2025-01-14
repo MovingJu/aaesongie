@@ -28,8 +28,9 @@ def total_gen():
 
     mnd, total_amount = preprocess_total_data()
 
+    xticks = int(len(mnd)/20)
 
-    fig, ax = graph_gen.graph_gen(mnd, total_amount, xticks=2, title='총액')
+    fig, ax = graph_gen.graph_gen(mnd, total_amount, xticks=xticks, title='총액')
 
     ax = graph_text_gen.graph_text_gen(mnd, total_amount, ax, show_level=2)
 

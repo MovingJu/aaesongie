@@ -12,8 +12,7 @@ import graph_gen
 import graph_text_gen
 
 
-def monthly_gen():
-
+def preprocessor():
     date, note, amount, total_amount = data_csv.read_data('data_csv/data.csv')
 
     ymd, hnm, sec = data_csv.time_seper(date)
@@ -30,6 +29,14 @@ def monthly_gen():
             indexer.append(j + 1)
 
     indexer.append(len(day) + 2)
+
+    return month, indexer, day, total_amount
+
+
+
+def monthly_gen():
+
+    month, indexer, day, total_amount = preprocessor()
 
 
     for k in range(len(sorted(set(month)))):
@@ -48,7 +55,7 @@ def monthly_gen():
 
 if __name__ == "__main__":
     import time
-    
+
     st = time.time()
     monthly_gen()
     et = time.time()
