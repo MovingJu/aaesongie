@@ -4,8 +4,7 @@ from matplotlib.ticker import ScalarFormatter
 
 
 import data_csv
-import graph_gen
-import graph_text_gen
+import visualizer
 
 
 def preprocessor():
@@ -48,13 +47,13 @@ def weekly_gen():
     xlist, ylist, month_seper = preprocessor()
 
 
-    fig, ax = graph_gen.graph_gen(xlist, ylist, figsize=(12, 8), 
+    fig, ax = visualizer.graph_gen(xlist, ylist, figsize=(12, 8), 
                                     title=f'{month_seper + 1}월 소비량',
                                     x_rotation=20)
 
-    ax = graph_text_gen.graph_text_gen(xlist, ylist, ax, show_level=1)
+    ax = visualizer.graph_text_gen(xlist, ylist, ax, show_level=1)
 
-    fig.savefig(f'graphs/{month_seper + 1}monthly.png', dpi=200)
+    fig.savefig(f'visualizer/graphs/{month_seper + 1}monthly.png', dpi=200)
 
 
 if __name__ == "__main__":

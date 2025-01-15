@@ -1,6 +1,5 @@
 import data_csv
-import graph_gen
-import graph_text_gen
+import visualizer
 
 
 def preprocess_total_data():
@@ -21,12 +20,12 @@ def total_gen():
 
     xticks = int(len(mnd)/20)
 
-    fig, ax = graph_gen.graph_gen(mnd, total_amount, xticks=xticks, title='총액')
+    fig, ax = visualizer.graph_gen(mnd, total_amount, xticks=xticks, title='전체')
 
-    ax = graph_text_gen.graph_text_gen(mnd, total_amount, ax, show_level=2)
+    ax = visualizer.graph_text_gen(mnd, total_amount, ax, show_level=2)
 
 
-    fig.savefig(f'graphs/total.png', dpi=200)
+    fig.savefig(f'visualizer/graphs/total.png', dpi=200)
 
 
 if __name__ == "__main__":

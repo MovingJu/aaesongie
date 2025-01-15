@@ -8,6 +8,10 @@ from collections import defaultdict
 
 import data_csv
 
+
+### to do: graph버튼을 누르고 들어오면, total_graph만 보이고 monthly, weekly 버튼이 2개 있게 하기, 
+### monthly 버튼을 누르면 아래의 코드처럼 달마다의 그래프 보여주기(역순으로)
+
 class Graphs(Popup):
 
     def __init__(self, file_path, **kwargs):
@@ -41,26 +45,34 @@ class Graphs(Popup):
 
         try:
 
+            graph_box = BoxLayout(orientation='horizontal', size_hint_y=None, height=500)
+            img_widget = Image(
+                source='visualizer/graphs/total.png'
+            )
+            graph_box.add_widget(img_widget)
+            scroll_layout.add_widget(graph_box)
+
+
+
+            # graph_box.add_widget(Button(text="Monthly", font_size=32, height=80,
+            #                       on_press=self.show_monthly))
+            # scroll_layout.add_widget(graph_box)
+
 
             for i in range(len(set(month))):
                 graph_box = BoxLayout(orientation='horizontal', size_hint_y=None, height=450)
 
                 img_widget = Image(
-                source=f'visualizer/graphs/{i + 1}monthly.png',  # 이미지 파일 경로
-                # size_hint_x=None,
-                # width=0,  # 이미지 가로 크기
-                # keep_ratio=True,
-                # allow_stretch=True
+                source=f'visualizer/graphs/{len(set(month)) - i}monthly.png'
                 )
 
                 graph_box.add_widget(img_widget)
-
                 scroll_layout.add_widget(graph_box)
 
 
         except Exception as e:
             no_data_label = Label(
-                text="No graphs found or Unable to open it.",
+                text="Unable to visualize.",
                 size_hint_y=None,
                 height=30,
                 font_size='16sp'
@@ -75,12 +87,5 @@ class Graphs(Popup):
         layout.add_widget(scroll_view)
         return layout
 
-    def delete_transaction(self, note):
-        """특정 거래 항목 삭제."""
-        data_csv.remove_data(self.file_path, note)  # 항목 삭제
-        self.refresh_popup()  # 팝업 새로 고침
-
-    def refresh_popup(self):
-        """팝업을 새로 고침하여 데이터 갱신."""
-        self.content = self.show_transaction_list()
-        self.open()  # 팝업 다시 열기
+    def show_monthly(self):
+        return

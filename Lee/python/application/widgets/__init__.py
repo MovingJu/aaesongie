@@ -32,6 +32,7 @@ class WidgetPopup(Popup):
         popup.open()
 
     def show_widget2(self, instance):
-        visualizer.monthly_gen()
+        visualizer.total_gen()
+        
         popup = Graphs(file_path="data_csv/data.csv")
         popup.open()
