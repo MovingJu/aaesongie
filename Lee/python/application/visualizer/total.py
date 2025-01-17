@@ -7,6 +7,8 @@ def preprocess_total_data():
 
     year, month, day = data_csv.day_seper(ymd)
 
+    print(month, day)
+
     # 날짜와 월/일 조합 리스트 생성
     mnd = [f"{month[i]}-{day[i]}" for i in range(len(month))]
 
@@ -18,7 +20,7 @@ def total_gen():
 
     mnd, total_amount = preprocess_total_data()
 
-    xticks = int(len(mnd)/20)
+    xticks = max(int(len(mnd)/20), 1)
 
     fig, ax = visualizer.graph_gen(mnd, total_amount, xticks=xticks, title='전체')
 

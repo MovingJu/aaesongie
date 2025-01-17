@@ -7,6 +7,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.scatter import Scatter
 
 import data_csv
+import visualizer
 
 class Graphs(Popup):
 
@@ -71,9 +72,7 @@ class Graphs(Popup):
 
 
 
-        
-        
-
+    
 
         scroll_view.add_widget(scroll_layout)
 
@@ -86,6 +85,7 @@ class Graphs(Popup):
 
 
     def show_monthly(self,instance):
+        visualizer.monthly_gen()
         popup = Show_monthly(file_path="data_csv/data.csv")
         popup.open()
 
