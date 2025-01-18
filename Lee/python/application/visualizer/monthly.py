@@ -37,7 +37,7 @@ def monthly_gen():
         ylist = total_amount[indexer[k]:indexer[k+1]]
 
         fig, ax = visualizer.graph_gen(xlist, ylist, figsize=(12, 8), 
-                                      title=f'{k + 1}월 소비량',
+                                      title=f'{k + 1}M\'s Spent Amount',
                                       x_rotation=20)
 
         ax = visualizer.graph_text_gen(xlist, ylist, ax, show_level=1)

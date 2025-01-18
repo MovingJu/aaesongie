@@ -22,7 +22,7 @@ def total_gen():
 
     xticks = max(int(len(mnd)/20), 1)
 
-    fig, ax = visualizer.graph_gen(mnd, total_amount, xticks=xticks, title='전체')
+    fig, ax = visualizer.graph_gen(mnd, total_amount, xticks=xticks, title='Total')
 
     ax = visualizer.graph_text_gen(mnd, total_amount, ax, show_level=2)
 

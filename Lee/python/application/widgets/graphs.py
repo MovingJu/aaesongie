@@ -4,13 +4,12 @@ from kivy.uix.popup import Popup
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
-from kivy.uix.scatter import Scatter
+from kivy.graphics import Rotate
 
 import data_csv
 import visualizer
 
 class Graphs(Popup):
-
     def __init__(self, file_path, **kwargs):
         super().__init__(**kwargs)
         self.title = "Graphs"
@@ -19,44 +18,22 @@ class Graphs(Popup):
         self.content = self.show_graphs()
 
     def show_graphs(self):
-
         date, note, amount, total_amount = data_csv.read_data(self.file_path)
-
         ymd, hnm, sec = data_csv.time_seper(date)
-
         year, month, day = data_csv.day_seper(ymd)
 
-        # 외부 레이아웃 설정
         layout = BoxLayout(orientation='vertical', spacing=10)
-        
         scroll_view = ScrollView(size_hint=(1, 1), do_scroll_x=False)
         scroll_layout = BoxLayout(orientation='vertical', spacing=5, size_hint_y=None)
         scroll_layout.bind(minimum_height=scroll_layout.setter('height'))
 
         try:
-            # Total graph
-            graph_box = BoxLayout(orientation='vertical', size_hint_y=None, height=700)
-            img_widget = Image(
-                source='visualizer/graphs/total.png',
-                allow_stretch=True
-            )
-            img_widget.bind(on_touch_down=self.show_image_popup)
-            graph_box.add_widget(img_widget)
-            scroll_layout.add_widget(graph_box)
+            # Add Total Graph
+            self.add_graph(scroll_layout, 'visualizer/graphs/total.png')
 
-            monthly_button_box = BoxLayout(orientation='vertical', size_hint_y=None, height=60)  # 높이를 줄임
-            monthly_button = Button(
-                text="Monthly Graphs",
-                font_size=20,  # 폰트 크기 조정
-                size_hint=(1, None),  # 버튼의 크기를 박스 크기에 맞춤
-                height=50  # 버튼 높이를 줄임
-            )
-            monthly_button.bind(on_press=self.show_monthly)
-            monthly_button_box.add_widget(monthly_button)
-            scroll_layout.add_widget(monthly_button_box)
-
-
-
+            # Add Buttons for Monthly and Weekly Graphs
+            self.add_button(scroll_layout, "Monthly Graphs", self.show_monthly)
+            self.add_button(scroll_layout, "Weekly Graphs", self.show_weekly)
 
         except Exception as e:
             no_data_label = Label(
@@ -65,45 +42,62 @@ class Graphs(Popup):
                 height=30,
                 font_size='16sp'
             )
-
-            print("error code: " + str(e))
-
+            print(f"Error code: {str(e)}")
             scroll_layout.add_widget(no_data_label)
 
-
-
-    
-
         scroll_view.add_widget(scroll_layout)
-
-
         layout.add_widget(scroll_view)
 
-
         return layout
-    
 
+    def add_graph(self, layout, source):
+        graph_box = BoxLayout(orientation='vertical', size_hint_y=None, height=700)
+        img_widget = Image(source=source, allow_stretch=True)
+        img_widget.bind(on_touch_down=self.show_image_popup)
+        graph_box.add_widget(img_widget)
+        layout.add_widget(graph_box)
 
-    def show_monthly(self,instance):
+    def add_button(self, layout, text, callback):
+        button_box = BoxLayout(orientation='vertical', size_hint_y=None, height=60)
+        button = Button(
+            text=text,
+            font_size=20,
+            size_hint=(1, None),
+            height=50
+        )
+        button.bind(on_press=callback)
+        button_box.add_widget(button)
+        layout.add_widget(button_box)
+
+    def show_monthly(self, instance):
         visualizer.monthly_gen()
         popup = Show_monthly(file_path="data_csv/data.csv")
         popup.open()
 
+    def show_weekly(self, instance):
+        visualizer.weekly_gen()
+        popup = Show_weekly(file_path="data_csv/data.csv")
+        popup.open()
 
     def show_image_popup(self, instance, touch):
-        # Check if the touch is on the image widget
         if instance.collide_point(*touch.pos):
-            scatter = Scatter(
-            scale=6
-        )
-            image = Image(source=instance.source, allow_stretch=True)
-            scatter.add_widget(image)
+            image_widget = Image(
+                source=instance.source,
+                allow_stretch=True,
+                size_hint=(None, None),
+                width=800,
+                height=600,
+                pos_hint={'center_x': 2, 'center_y': 0.5}
+            )
+            with image_widget.canvas.before:
+                rotate = Rotate(angle=-90, origin=image_widget.center)
+                image_widget._rotate_transform = rotate
             
             popup = Popup(
                 title="Graph Preview",
-                size_hint=(1, 1)
+                size_hint=(0.9, 0.9)
             )
-            popup.content = scatter
+            popup.content = image_widget
             popup.open()
 
 
@@ -116,31 +110,18 @@ class Show_monthly(Popup):
         self.content = self.show_graphs()
 
     def show_graphs(self):
-         
         date, note, amount, total_amount = data_csv.read_data(self.file_path)
-
         ymd, hnm, sec = data_csv.time_seper(date)
-
         year, month, day = data_csv.day_seper(ymd)
 
-
         layout = BoxLayout(orientation='vertical', spacing=10)
-        
         scroll_view = ScrollView(size_hint=(1, 1), do_scroll_x=False)
         scroll_layout = BoxLayout(orientation='vertical', spacing=5, size_hint_y=None)
         scroll_layout.bind(minimum_height=scroll_layout.setter('height'))
 
         try:
-
             for i in range(len(set(month))):
-                        graph_box = BoxLayout(orientation='horizontal', size_hint_y=None, height=700)
-                        img_widget = Image(
-                            source=f'visualizer/graphs/{len(set(month)) - i}monthly.png',
-                            allow_stretch=True
-                        )
-                        img_widget.bind(on_touch_down=self.show_image_popup)
-                        graph_box.add_widget(img_widget)
-                        scroll_layout.add_widget(graph_box)
+                self.add_graph(scroll_layout, f'visualizer/graphs/{len(set(month)) - i}monthly.png')
 
         except:
             no_data_label = Label(
@@ -154,21 +135,89 @@ class Show_monthly(Popup):
         scroll_view.add_widget(scroll_layout)
         layout.add_widget(scroll_view)
         return layout
-    
 
+    def add_graph(self, layout, source):
+        graph_box = BoxLayout(orientation='horizontal', size_hint_y=None, height=700)
+        img_widget = Image(source=source, allow_stretch=True)
+        img_widget.bind(on_touch_down=self.show_image_popup)
+        graph_box.add_widget(img_widget)
+        layout.add_widget(graph_box)
 
     def show_image_popup(self, instance, touch):
-        # Check if the touch is on the image widget
         if instance.collide_point(*touch.pos):
-            scatter = Scatter(
-            scale=6
-        )
-            image = Image(source=instance.source, allow_stretch=True)
-            scatter.add_widget(image)
+            image_widget = Image(
+                source=instance.source,
+                allow_stretch=True,
+                size_hint=(None, None),
+                width=800,
+                height=600
+            )
+            with image_widget.canvas.before:
+                rotate = Rotate(angle=-90, origin=image_widget.center)
+                image_widget._rotate_transform = rotate
             
             popup = Popup(
                 title="Graph Preview",
-                size_hint=(1, 1)
+                size_hint=(0.9, 0.9)
             )
-            popup.content = scatter
+            popup.content = image_widget
+            popup.open()
+
+
+class Show_weekly(Popup):
+    def __init__(self, file_path, **kwargs):
+        super().__init__(**kwargs)
+        self.title = "Weekly Graphs"
+        self.size_hint = (0.8, 0.8)
+        self.file_path = file_path
+        self.content = self.show_graphs()
+
+    def show_graphs(self):
+        layout = BoxLayout(orientation='vertical', spacing=10)
+        scroll_view = ScrollView(size_hint=(1, 1), do_scroll_x=False)
+        scroll_layout = BoxLayout(orientation='vertical', spacing=5, size_hint_y=None)
+        scroll_layout.bind(minimum_height=scroll_layout.setter('height'))
+
+        try:
+            for i in range(4):
+                self.add_graph(scroll_layout, f'visualizer/graphs/{3 - i}week.png')
+
+        except:
+            no_data_label = Label(
+                text="Unable to visualize.",
+                size_hint_y=None,
+                height=30,
+                font_size='16sp'
+            )
+            scroll_layout.add_widget(no_data_label)
+
+        scroll_view.add_widget(scroll_layout)
+        layout.add_widget(scroll_view)
+        return layout
+
+    def add_graph(self, layout, source):
+        graph_box = BoxLayout(orientation='horizontal', size_hint_y=None, height=700)
+        img_widget = Image(source=source, allow_stretch=True)
+        img_widget.bind(on_touch_down=self.show_image_popup)
+        graph_box.add_widget(img_widget)
+        layout.add_widget(graph_box)
+
+    def show_image_popup(self, instance, touch):
+        if instance.collide_point(*touch.pos):
+            image_widget = Image(
+                source=instance.source,
+                allow_stretch=True,
+                size_hint=(None, None),
+                width=800,
+                height=600
+            )
+            with image_widget.canvas.before:
+                rotate = Rotate(angle=-90, origin=image_widget.center)
+                image_widget._rotate_transform = rotate
+            
+            popup = Popup(
+                title="Graph Preview",
+                size_hint=(0.9, 0.9)
+            )
+            popup.content = image_widget
             popup.open()

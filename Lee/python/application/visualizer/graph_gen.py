@@ -26,8 +26,9 @@ def preprocess_data(file_path):
     return mnd, total_amount
 
 
-def graph_gen(xlist, ylist, xlable='날짜', ylable='총액', xticks=2,
-              figsize=(12, 9), title='그래프 제목', x_rotation=45):
+def graph_gen(xlist, ylist, xlable='date', ylable='total_amount', xticks=2,
+              figsize=(12, 9), title='그래프 제목', x_rotation=45,
+              show_y = 1):
     """
     그래프 생성 함수
     """
@@ -37,7 +38,8 @@ def graph_gen(xlist, ylist, xlable='날짜', ylable='총액', xticks=2,
     ax.plot(xlist, ylist, color='black', marker='o', linestyle='-.', label='데이터')
 
     # 기준선 추가 (ylist 첫 번째 값 사용)
-    ax.axhline(y=total_amount[0], color='red', linestyle=':', linewidth=1.5, alpha=1, label='기준선')
+    if show_y == 1:
+        ax.axhline(y=total_amount[0], color='red', linestyle=':', linewidth=1.5, alpha=1, label='기준선')
 
     # 그래프 제목 및 라벨
     ax.set_title(title, color='black')
