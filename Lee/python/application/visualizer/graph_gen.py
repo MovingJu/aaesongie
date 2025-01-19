@@ -34,7 +34,7 @@ def graph_gen(xlist, ylist, xlable='date', ylable='total_amount', xticks=2,
     """
     _, _, _, total_amount = data_csv.read_data('data_csv/data.csv')
 
-    fig, ax = plt.subplots(figsize=figsize, facecolor='gray')  # 그래프 크기 조정 및 배경색 설정
+    fig, ax = plt.subplots(figsize=figsize, facecolor='lightgray')  # 그래프 크기 조정 및 배경색 설정
     ax.plot(xlist, ylist, color='black', marker='o', linestyle='-.', label='데이터')
 
     # 기준선 추가 (ylist 첫 번째 값 사용)
@@ -54,7 +54,7 @@ def graph_gen(xlist, ylist, xlable='date', ylable='total_amount', xticks=2,
     ax.grid(color='black', alpha=0.5, linestyle='--', linewidth=1)
 
     # 배경색 설정
-    ax.set_facecolor('gray')
+    ax.set_facecolor('lightgray')
 
 
     return fig, ax
