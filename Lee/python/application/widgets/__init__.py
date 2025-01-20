@@ -2,6 +2,8 @@ from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout as PopupBox
 from kivy.uix.button import Button
 
+import visualizer.calendar
+
 from .transactionlist import TransactionList
 from .graphs import Graphs
 
@@ -33,6 +35,7 @@ class WidgetPopup(Popup):
 
     def show_widget2(self, instance):
         visualizer.total_gen()
+        visualizer.calendar_gen()
         
         popup = Graphs(file_path="data_csv/data.csv")
         popup.open()

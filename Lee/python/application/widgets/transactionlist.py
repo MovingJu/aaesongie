@@ -30,12 +30,11 @@ class TransactionList(Popup):
         try: 
             date, note, amount, total_amount = data_csv.read_data(self.file_path)
 
-
-
             # 날짜별로 데이터를 분리
             (day, hnm, sec) = data_csv.time_seper(date)
 
-            date_set = sorted(set(day))  # 날짜 목록을 정렬
+            # 날짜 목록을 내림차순으로 정렬
+            date_set = sorted(set(day), reverse=True)  # 날짜를 내림차순으로 정렬
 
             for one_day in date_set:
 
@@ -49,13 +48,10 @@ class TransactionList(Popup):
                 )
                 scroll_layout.add_widget(date_label)
 
-
                 for i in range(len(date)):
-                    
                     if one_day == day[i]:
 
                         transaction_box = BoxLayout(orientation='horizontal', size_hint_y=None, height=50)
-                        
 
                         # Note (중간 크기 글자)
                         note_label = Label(
@@ -66,7 +62,6 @@ class TransactionList(Popup):
                             font_name='NanumGothicBold.ttf'
                         )
                         transaction_box.add_widget(note_label)
-
 
                         formatted_total_amount = (
                             f"[size=12sp]{total_amount[i]}[/size]\n"  # total_amount 폰트 크기 설정
@@ -80,7 +75,6 @@ class TransactionList(Popup):
                             markup=True  # 마크업 활성화
                         )
                         transaction_box.add_widget(details_label)
-
 
                         time_label = Label(
                             text=f"{hnm[i]}",
@@ -104,9 +98,6 @@ class TransactionList(Popup):
 
                         scroll_layout.add_widget(transaction_box)
 
-                    # spacing_widget = Widget(size_hint_y=None, height=0)  # 원하는 높이 설정
-                    # scroll_layout.add_widget(spacing_widget)
-
         except Exception as e:
             no_data_label = Label(
                 text="No transactions found or Unable to open it.",
@@ -119,7 +110,6 @@ class TransactionList(Popup):
 
             scroll_layout.add_widget(no_data_label)
 
-        
         # 스크롤 뷰에 레이아웃 추가
         scroll_view.add_widget(scroll_layout)
 
