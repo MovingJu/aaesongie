@@ -1,1 +1,0 @@
-from .ititial_screen import InitialScreen
