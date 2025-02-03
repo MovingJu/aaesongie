@@ -8,7 +8,10 @@ int main(){
     // std::cin >> age;
 
     // if (age >= 19){
-    //     std::cout << "You're an adult." << std::endl;
+    //     std::cout << "You're an adult." << std::e
+    // num % 2 == 0 ? std::cout << "Even" : std::cout << "Odd" << std::endl;
+
+    // std::cout ndl;
     // }
     // else if (age < 0){
     //     std::cout << "You haven't been born yet!" << std::endl;
@@ -87,7 +90,9 @@ int main(){
 
     num % 2 == 0 ? std::cout << "Even" : std::cout << "Odd" << std::endl;
 
-    std::cout << (num % 2 == 0 ? "Even" : "Odd") << std::endl;
+    // &&: and, ||: or, !: not
+
+    std::cout << (num % 2 == 0 || num % 2 == 0 ? "Even" : "Odd") << std::endl;
 
     return 0;
 }
